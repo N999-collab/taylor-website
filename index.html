@@ -17,15 +17,10 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK SC", "PingFang SC", sans-serif;
+      background: #f9f0f7;
       color: #222;
       line-height: 1.6;
-      /* 柔和粉紫背景 + 光斑 */
-      background:
-        radial-gradient(circle at 10% 0%, rgba(255, 210, 240, 0.9), transparent 55%),
-        radial-gradient(circle at 85% 10%, rgba(255, 230, 245, 0.85), transparent 55%),
-        radial-gradient(circle at 15% 85%, rgba(214, 225, 255, 0.8), transparent 55%),
-        #f7f0ff;
-      background-attachment: fixed;
+      position: relative;
     }
 
     img {
@@ -35,6 +30,8 @@
 
     .section {
       padding: 80px 16px;
+      position: relative;
+      z-index: 1;
     }
 
     .container {
@@ -42,24 +39,85 @@
       margin: 0 auto;
     }
 
+    /* 背景 + 樱花 */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .page-bg-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255,185,220,0.3), transparent 60%),
+        radial-gradient(circle at 90% 20%, rgba(186,208,255,0.35), transparent 60%),
+        linear-gradient(to bottom, #fff7fb, #f3f4ff);
+    }
+
+    .petals {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .petals span {
+      position: absolute;
+      width: 18px;
+      height: 14px;
+      background: radial-gradient(circle at 30% 30%, #ffe0f0, #ffb3d3);
+      border-radius: 70% 30% 70% 30%;
+      opacity: 0.8;
+      animation: petalFall 16s linear infinite;
+      filter: blur(0.3px);
+    }
+
+    .petals span:nth-child(1) { left: 8%;  animation-delay: -2s; }
+    .petals span:nth-child(2) { left: 25%; animation-delay: -6s; }
+    .petals span:nth-child(3) { left: 45%; animation-delay: -10s;}
+    .petals span:nth-child(4) { left: 65%; animation-delay: -4s; }
+    .petals span:nth-child(5) { left: 82%; animation-delay: -12s;}
+    .petals span:nth-child(6) { left: 92%; animation-delay: -8s; }
+
+    @keyframes petalFall {
+      0% {
+        transform: translate3d(0,-120px,0) rotateZ(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.9;
+      }
+      70% {
+        transform: translate3d(-40px, 80vh, 0) rotateZ(120deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate3d(20px, 110vh, 0) rotateZ(200deg);
+        opacity: 0;
+      }
+    }
+
     /* 顶部导航 */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.86);
-      border-bottom: 1px solid rgba(200, 200, 220, 0.6);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(14px);
+      background: radial-gradient(circle at top, rgba(255,255,255,0.92), rgba(255,255,255,0.80));
+      border-bottom: 1px solid rgba(200,200,220,0.6);
+      transition: transform 0.35s ease, background 0.3s ease;
     }
 
-    .site-header.scrolled {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    }
-
-    /* 手机端向下滑动时隐藏 */
-    .site-header.is-hidden {
+    .site-header.hide-header {
       transform: translateY(-100%);
+    }
+
+    @media (min-width: 860px) {
+      .site-header.hide-header {
+        transform: none; /* 桌面端保持不隐藏 */
+      }
     }
 
     .nav-inner {
@@ -68,7 +126,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
+      padding: 10px 16px;
     }
 
     .logo {
@@ -90,7 +148,7 @@
       font-size: 14px;
       padding: 6px 10px;
       border-radius: 999px;
-      transition: background 0.3s, color 0.3s, transform 0.3s;
+      transition: background 0.25s, color 0.25s, transform 0.25s;
     }
 
     nav a:hover {
@@ -105,52 +163,6 @@
       font-weight: 600;
     }
 
-    /* 全局樱花特效 */
-    .petals {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .petals span {
-      position: absolute;
-      top: -10%;
-      width: 18px;
-      height: 24px;
-      background: radial-gradient(circle at 30% 30%, #fff, #ffb3d6 55%, #ff7cc4 100%);
-      border-radius: 70% 25% 70% 25%;
-      opacity: 0.7;
-      filter: blur(0.2px);
-      animation: petalFall 14s linear infinite;
-    }
-
-    .petals span:nth-child(1) { left: 8%;  animation-duration: 16s; animation-delay: 0s;  }
-    .petals span:nth-child(2) { left: 22%; animation-duration: 18s; animation-delay: -4s; }
-    .petals span:nth-child(3) { left: 40%; animation-duration: 15s; animation-delay: -2s; }
-    .petals span:nth-child(4) { left: 60%; animation-duration: 17s; animation-delay: -6s; }
-    .petals span:nth-child(5) { left: 78%; animation-duration: 19s; animation-delay: -8s; }
-    .petals span:nth-child(6) { left: 90%; animation-duration: 20s; animation-delay: -10s; }
-
-    @keyframes petalFall {
-      0% {
-        transform: translate3d(0, -10%, 0) rotateZ(0deg);
-        opacity: 0;
-      }
-      15% {
-        opacity: 0.8;
-      }
-      60% {
-        transform: translate3d(40px, 80vh, 0) rotateZ(150deg);
-        opacity: 0.7;
-      }
-      100% {
-        transform: translate3d(-20px, 110vh, 0) rotateZ(220deg);
-        opacity: 0;
-      }
-    }
-
     /* Hero */
     .hero {
       min-height: 80vh;
@@ -158,7 +170,7 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      background: radial-gradient(circle at top left, #ffe0f0 0, rgba(247, 247, 251, 0.9) 45%, #e4edff 100%);
+      background: radial-gradient(circle at top left, #ffe0f0 0, #f7f7fb 45%, #e4edff 100%);
     }
 
     .hero-inner {
@@ -191,8 +203,8 @@
       font-size: 12px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(230, 230, 245, 0.9);
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(230,230,245,0.9);
     }
 
     .hero-btns {
@@ -217,19 +229,19 @@
     .btn-primary {
       background: linear-gradient(120deg, #ff8bcf, #9cb5ff);
       color: #fff;
-      box-shadow: 0 8px 20px rgba(200, 140, 255, 0.4);
+      box-shadow: 0 8px 20px rgba(200,140,255,0.4);
       animation: pulse 2.4s ease-in-out infinite;
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(200, 140, 255, 0.6);
+      box-shadow: 0 12px 28px rgba(200,140,255,0.6);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255,255,255,0.9);
       color: #555;
-      border: 1px solid rgba(210, 210, 235, 0.8);
+      border: 1px solid rgba(210,210,235,0.8);
     }
 
     .btn-secondary:hover {
@@ -244,7 +256,7 @@
     .hero-photo-main {
       border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
       transform: translateY(0);
       transition: transform 0.4s ease;
     }
@@ -257,11 +269,11 @@
       position: absolute;
       bottom: 12px;
       left: -8px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255,255,255,0.9);
       padding: 8px 14px;
       border-radius: 999px;
       font-size: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     .hero-lights {
@@ -276,7 +288,7 @@
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 183, 234, 0.6), transparent 60%);
+      background: radial-gradient(circle, rgba(255,183,234,0.6), transparent 60%);
       animation: floatLight 16s linear infinite;
     }
 
@@ -293,16 +305,52 @@
     @keyframes pulse {
       0% {
         transform: scale(1);
-        box-shadow: 0 8px 20px rgba(200, 140, 255, 0.4);
+        box-shadow: 0 8px 20px rgba(200,140,255,0.4);
       }
       50% {
         transform: scale(1.04);
-        box-shadow: 0 12px 28px rgba(200, 140, 255, 0.6);
+        box-shadow: 0 12px 28px rgba(200,140,255,0.6);
       }
       100% {
         transform: scale(1);
-        box-shadow: 0 8px 20px rgba(200, 140, 255, 0.4);
+        box-shadow: 0 8px 20px rgba(200,140,255,0.4);
       }
+    }
+
+    /* 向下滑动提示 */
+    .scroll-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      color: #666;
+      opacity: 0.85;
+      animation: hintFade 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .scroll-hint-arrow {
+      font-size: 18px;
+      margin-bottom: 4px;
+      animation: hintBounce 1.6s ease-in-out infinite;
+    }
+
+    @keyframes hintBounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(6px); }
+    }
+
+    @keyframes hintFade {
+      0%, 100% { opacity: 0.9; }
+      50%      { opacity: 0.4; }
+    }
+
+    .scroll-hint.hidden {
+      display: none;
     }
 
     /* About */
@@ -333,9 +381,9 @@
     .about-card {
       padding: 14px 16px;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(220, 220, 240, 0.9);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(220,220,240,0.9);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
       transition: transform 0.3s, box-shadow 0.3s;
       font-size: 13px;
     }
@@ -347,7 +395,7 @@
 
     .about-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.12);
     }
 
     /* eras 区块 */
@@ -360,7 +408,7 @@
     .era {
       border-radius: 26px;
       padding: 28px 24px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
       overflow: hidden;
       position: relative;
     }
@@ -392,7 +440,7 @@
       background: #f4eee4;
       padding: 10px;
       border-radius: 22px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
       transition: transform 0.35s, box-shadow 0.35s;
     }
 
@@ -402,7 +450,7 @@
 
     .era-cover-frame:hover {
       transform: translateY(-6px) rotate(-1deg);
-      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.26);
+      box-shadow: 0 22px 48px rgba(0,0,0,0.26);
     }
 
     .era-meta {
@@ -416,8 +464,8 @@
     .tag {
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(220, 220, 245, 0.9);
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(220,220,245,0.9);
     }
 
     .era h3 {
@@ -442,8 +490,25 @@
       font-size: 12px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px dashed rgba(180, 180, 220, 0.8);
+      background: rgba(255,255,255,0.9);
+      border: 1px dashed rgba(180,180,220,0.8);
+      position: relative;
+      cursor: default;
+    }
+
+    .song-pill[data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      left: 50%;
+      bottom: 130%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .era-gallery {
@@ -455,13 +520,13 @@
 
     .era-gallery img {
       border-radius: 16px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
       transition: transform 0.35s, box-shadow 0.35s;
     }
 
     .era-gallery img:hover {
       transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 18px 38px rgba(0,0,0,0.28);
     }
 
     /* Lover 区漂浮爱心 */
@@ -481,7 +546,7 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 145, 196, 0.9), rgba(255, 145, 196, 0.1));
+      background: radial-gradient(circle, rgba(255,145,196,0.9), rgba(255,145,196,0.1));
       clip-path: path("M10.5 3C9.1 1.3 6.9 1 5.4 2.3 3.9 1 1.7 1.3 0.3 3  -0.9 4.5 -0.1 6.9 1.2 8.2l4.2 4.1c0.3 0.3 0.8 0.3 1.1 0l4.2-4.1c1.3-1.3 2.1-3.7 0.9-5.2z");
       opacity: 0.8;
       animation: heartRise 10s linear infinite;
@@ -519,8 +584,8 @@
 
     .album-card {
       border-radius: 22px;
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.1);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -553,7 +618,7 @@
 
     .album-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.2);
     }
 
     .album-card::after {
@@ -564,7 +629,7 @@
       font-size: 11px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0,0,0,0.55);
       color: #fff;
       opacity: 0;
       transform: translateY(6px);
@@ -577,11 +642,11 @@
       transform: translateY(0);
     }
 
-    /* Album Modal */
+    /* Album / Photo Modal */
     .album-modal {
       position: fixed;
       inset: 0;
-      background: rgba(5, 5, 20, 0.78);
+      background: rgba(5,5,20,0.78);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -610,10 +675,12 @@
     .album-modal-content {
       border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
       background: #000;
       transform: translateY(10px) scale(0.94);
       transition: transform 0.3s ease;
+      position: relative;
+      cursor: pointer;
     }
 
     .album-modal.open .album-modal-content {
@@ -642,14 +709,26 @@
       height: 32px;
       border-radius: 50%;
       border: none;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0,0,0,0.75);
       color: #fff;
       cursor: pointer;
       font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    .modal-nav-hint {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 8px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      pointer-events: none;
     }
 
     /* Eras Tour 区 */
@@ -657,24 +736,21 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
-      align-items: flex-start;
     }
 
     .eras-photo {
       position: relative;
       border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-      cursor: default;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      cursor: pointer;
       background: #000;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
 
-    /* 关键：图片高度由自己决定，避免下面出现黑条 */
     .eras-photo img {
       width: 100%;
-      height: auto;
-      display: block;
+      height: 100%;
       object-fit: cover;
       transform: scale(1.02);
       transition: transform 0.35s ease;
@@ -682,7 +758,7 @@
 
     .eras-photo:hover {
       transform: translateY(-8px) rotate(-0.5deg);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
     }
 
     .eras-photo:hover img {
@@ -697,7 +773,7 @@
       padding: 12px 12px 10px;
       font-size: 12px;
       color: #fdfdfd;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.05));
+      background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.05));
     }
 
     .eras-caption strong {
@@ -744,6 +820,13 @@
     .timeline-year {
       font-weight: 700;
       margin-bottom: 4px;
+      display: inline-block;
+      transition: transform 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .timeline-year:hover {
+      transform: scale(1.05);
+      text-shadow: 0 0 6px rgba(255,137,200,0.7);
     }
 
     /* My Thoughts */
@@ -752,13 +835,13 @@
       padding: 20px 18px;
       background: repeating-linear-gradient(
         -45deg,
-        rgba(255, 255, 255, 0.96),
-        rgba(255, 255, 255, 0.96) 10px,
-        rgba(255, 238, 250, 0.96) 10px,
-        rgba(255, 238, 250, 0.96) 20px
+        rgba(255,255,255,0.96),
+        rgba(255,255,255,0.96) 10px,
+        rgba(255,238,250,0.96) 10px,
+        rgba(255,238,250,0.96) 20px
       );
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-      border: 1px solid rgba(240, 200, 255, 0.7);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      border: 1px solid rgba(240,200,255,0.7);
       position: relative;
       overflow: hidden;
     }
@@ -771,7 +854,7 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 164, 205, 0.6), transparent 60%);
+      background: radial-gradient(circle, rgba(255,164,205,0.6), transparent 60%);
     }
 
     .note-card h3 {
@@ -788,13 +871,53 @@
       margin-bottom: 8px;
     }
 
-    /* 滚动出现动画 —— 为兼容手机 Safari，这里保持默认可见 */
-    .observe {
-      opacity: 1;
-      transform: none;
+    .egg-note {
+      margin-top: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.9);
+      border: 1px dashed rgba(240,190,255,0.9);
+      padding: 8px 12px 10px;
+      font-size: 13px;
     }
 
-    /* 音乐按钮 */
+    .egg-note > summary {
+      cursor: pointer;
+      list-style: none;
+      outline: none;
+    }
+
+    .egg-note > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .egg-note > summary::before {
+      content: "✧ ";
+      color: #ff8bcf;
+    }
+
+    .egg-note[open] {
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .egg-note p {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    /* 滚动出现动画 */
+    .observe {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .observe.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 背景音乐按钮 */
     .music-toggle {
       position: fixed;
       right: 18px;
@@ -805,9 +928,9 @@
       border: none;
       cursor: pointer;
       font-size: 20px;
-      background: linear-gradient(135deg, #ff8bcf, #9cb5ff);
+      background: radial-gradient(circle at 30% 0%, #ffe6f5, #ff8bcf, #9cb5ff);
       color: #fff;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -815,46 +938,86 @@
       transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
     }
 
+    .music-toggle::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: inherit;
+      border: 2px solid rgba(255,255,255,0.6);
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
     .music-toggle:hover {
       transform: translateY(-3px);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
     }
 
-    .music-toggle[data-playing="true"] {
-      filter: brightness(1.08);
+    .music-toggle[data-playing="true"]::after {
+      opacity: 1;
+      animation: musicPulse 2.2s ease-out infinite;
     }
 
-    /* 回到顶部按钮 */
-    .scroll-top {
+    @keyframes musicPulse {
+      0%   { transform: scale(0.9); opacity: 0.8; }
+      70%  { transform: scale(1.25); opacity: 0; }
+      100% { transform: scale(1.25); opacity: 0; }
+    }
+
+    .music-toggle-icon {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 动效开关按钮 */
+    .motion-toggle {
       position: fixed;
       right: 18px;
-      bottom: 74px; /* 在音乐按钮上方 */
-      width: 40px;
-      height: 40px;
+      bottom: 72px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
-      font-size: 18px;
-      background: rgba(255, 255, 255, 0.92);
-      color: #ff7cc4;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      font-size: 17px;
+      background: rgba(255,255,255,0.95);
+      color: #aa75ff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 110;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 120;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .scroll-top.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
+    .motion-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
     }
 
-    .scroll-top:active {
-      transform: translateY(1px) scale(0.98);
+    .motion-toggle[aria-pressed="true"] {
+      background: rgba(245,240,255,0.98);
+      color: #555;
+    }
+
+    .motion-toggle-label {
+      position: fixed;
+      right: 68px;
+      bottom: 82px;
+      font-size: 11px;
+      color: #777;
+      background: rgba(255,255,255,0.9);
+      padding: 3px 8px;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      z-index: 119;
+    }
+
+    @media (max-width: 540px) {
+      .motion-toggle-label {
+        display: none;
+      }
     }
 
     /* 响应式 */
@@ -891,12 +1054,37 @@
         max-width: 94vw;
       }
     }
+
+    /* 简洁模式：减少动效 */
+    body.reduced-motion .hero-lights span,
+    body.reduced-motion .lover-hearts span,
+    body.reduced-motion .petals span {
+      animation: none !important;
+      opacity: 0.4;
+    }
+
+    body.reduced-motion .btn-primary,
+    body.reduced-motion .scroll-hint,
+    body.reduced-motion .music-toggle::after {
+      animation: none !important;
+    }
+
+    body.reduced-motion .scroll-hint {
+      opacity: 0.7;
+    }
+
+    body.reduced-motion .observe {
+      opacity: 1;
+      transform: none;
+    }
   </style>
 </head>
 <body>
-<!-- 樱花层 -->
-<div class="petals" aria-hidden="true">
-  <span></span><span></span><span></span><span></span><span></span><span></span>
+<div class="page-bg" aria-hidden="true">
+  <div class="page-bg-gradient"></div>
+  <div class="petals">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
 </div>
 
 <header class="site-header">
@@ -943,13 +1131,18 @@
         </div>
       </div>
       <div class="hero-photo">
-        <div class="hero-photo-main">
+        <div class="hero-photo-main" data-lightbox-item>
+          <!-- 首页大图：你命名的 1989封面.jpg -->
           <img src="images/1989封面.jpg" alt="Taylor Swift 1989 Taylor's Version cover">
         </div>
         <div class="hero-floating-tag">
           在海风里，开始属于自己的 1989 时代。
         </div>
       </div>
+    </div>
+    <div class="scroll-hint" id="scrollHint">
+      <div class="scroll-hint-arrow">⌄</div>
+      <div>向下滑动继续看</div>
     </div>
   </section>
 
@@ -995,9 +1188,9 @@
         <!-- 1989 -->
         <article class="era era-1989">
           <div class="era-main">
-            <div class="era-cover">
+            <div class="era-cover" data-lightbox-item>
               <div class="era-cover-frame">
-                <img src="images/1989tv-cover.jpg" alt="1989 Taylor's Version album cover">
+                <img src="images/1989tv-cover.jpg" alt="1989 Taylor's Version album cover" loading="lazy">
               </div>
             </div>
             <div class="era-text">
@@ -1014,15 +1207,17 @@
                 音乐上是干净利落的流行制作，歌词却仍然充满画面：霓虹灯、午夜公路、反复上演又结束的关系。重录版加入了 vault 曲目，让“1989 的故事”有了新的结局。
               </p>
               <div class="song-list">
-                <span class="song-pill">Style (Taylor's Version)</span>
-                <span class="song-pill">Blank Space (Taylor's Version)</span>
-                <span class="song-pill">Out Of The Woods (Taylor's Version)</span>
-                <span class="song-pill">“Slut!” (Taylor's Version)</span>
+                <span class="song-pill" data-tip="城市灯光下的代表曲之一">Style (Taylor's Version)</span>
+                <span class="song-pill" data-tip="听完很容易在脑内继续写故事">Blank Space (Taylor's Version)</span>
+                <span class="song-pill" data-tip="适合坐车时看窗外循环">Out Of The Woods (Taylor's Version)</span>
+                <span class="song-pill" data-tip="重录时期的新视角小故事">“Slut!” (Taylor's Version)</span>
               </div>
             </div>
           </div>
           <div class="era-gallery">
-            <img src="images/1989tv-slut-single.jpg" alt="1989 TV single artwork">
+            <div data-lightbox-item>
+              <img src="images/1989tv-slut-single.jpg" alt="1989 TV single artwork" loading="lazy">
+            </div>
           </div>
         </article>
 
@@ -1043,20 +1238,22 @@
                 声音上更加多彩：有复古感、有独立流行的轻盈，也有安静到只剩心跳声的告白。封面上心形亮片妆的她，看起来有点脆弱，但眼神又很笃定。
               </p>
               <div class="song-list">
-                <span class="song-pill">Lover</span>
-                <span class="song-pill">Cruel Summer</span>
-                <span class="song-pill">The Archer</span>
-                <span class="song-pill">Cornelia Street</span>
+                <span class="song-pill" data-tip="像写给一个家的长信">Lover</span>
+                <span class="song-pill" data-tip="夏天的高架桥和心跳">Cruel Summer</span>
+                <span class="song-pill" data-tip="适合戴耳机一个人听">The Archer</span>
+                <span class="song-pill" data-tip="深夜走路 BGM 候选">Cornelia Street</span>
               </div>
             </div>
-            <div class="era-cover">
+            <div class="era-cover" data-lightbox-item>
               <div class="era-cover-frame">
-                <img src="images/lover-cover.jpg" alt="Lover album cover">
+                <img src="images/lover-cover.jpg" alt="Lover album cover" loading="lazy">
               </div>
             </div>
           </div>
           <div class="era-gallery">
-            <img src="images/lover-more-chapter.jpg" alt="The More Lover Chapter artwork">
+            <div data-lightbox-item>
+              <img src="images/lover-more-chapter.jpg" alt="The More Lover Chapter artwork" loading="lazy">
+            </div>
           </div>
           <div class="lover-hearts">
             <span></span>
@@ -1078,8 +1275,8 @@
       </p>
 
       <div class="albums-grid">
-        <article class="album-card" tabindex="0">
-          <img src="images/red-tv-chapter.jpg" alt="Red Taylor's Version era artwork">
+        <article class="album-card" tabindex="0" data-gallery="albums">
+          <img src="images/red-tv-chapter.jpg" alt="Red Taylor's Version era artwork" loading="lazy">
           <div class="album-body">
             <div class="album-title">Red (Taylor's Version)</div>
             <div class="album-meta">2012 / 2021 · 心碎与成长</div>
@@ -1089,8 +1286,8 @@
           </div>
         </article>
 
-        <article class="album-card" tabindex="0">
-          <img src="images/midnights-til-dawn.jpg" alt="Midnights album artwork">
+        <article class="album-card" tabindex="0" data-gallery="albums">
+          <img src="images/midnights-til-dawn.jpg" alt="Midnights album artwork" loading="lazy">
           <div class="album-body">
             <div class="album-title">Midnights</div>
             <div class="album-meta">2022 · 午夜自白</div>
@@ -1100,8 +1297,8 @@
           </div>
         </article>
 
-        <article class="album-card" tabindex="0">
-          <img src="images/speak-now-tour-live.jpg" alt="Speak Now World Tour live">
+        <article class="album-card" tabindex="0" data-gallery="albums">
+          <img src="images/speak-now-tour-live.jpg" alt="Speak Now World Tour live" loading="lazy">
           <div class="album-body">
             <div class="album-title">Speak Now</div>
             <div class="album-meta">2010 · 亲自开口说出来</div>
@@ -1111,8 +1308,8 @@
           </div>
         </article>
 
-        <article class="album-card" tabindex="0">
-          <img src="images/christmas-tree-farm.jpg" alt="Christmas Tree Farm single cover">
+        <article class="album-card" tabindex="0" data-gallery="albums">
+          <img src="images/christmas-tree-farm.jpg" alt="Christmas Tree Farm single cover" loading="lazy">
           <div class="album-body">
             <div class="album-title">Christmas Tree Farm</div>
             <div class="album-meta">2019 · 圣诞单曲</div>
@@ -1122,8 +1319,8 @@
           </div>
         </article>
 
-        <article class="album-card" tabindex="0">
-          <img src="images/back-to-december.jpg" alt="Back To December single artwork">
+        <article class="album-card" tabindex="0" data-gallery="albums">
+          <img src="images/back-to-december.jpg" alt="Back To December single artwork" loading="lazy">
           <div class="album-body">
             <div class="album-title">Back To December</div>
             <div class="album-meta">2010 · 经典道歉情歌</div>
@@ -1145,80 +1342,80 @@
       </p>
 
       <div class="eras-tour-grid">
-        <figure class="eras-photo">
-          <img src="images/taylor-green-field-soft-pink.jpg" alt="Taylor Swift with soft pink blouse in green field">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-green-field-soft-pink.jpg" alt="Taylor Swift with soft pink blouse in green field" loading="lazy">
           <figcaption class="eras-caption">
             <strong>午后阳光</strong>
             像在暂停键之间偷来的片刻安静，比舞台更像一张私人的相册页。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-black-stage-outfit.jpg" alt="Taylor Swift in black stage outfit">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-black-stage-outfit.jpg" alt="Taylor Swift in black stage outfit" loading="lazy">
           <figcaption class="eras-caption">
             <strong>暗色锋利</strong>
             黑色造型配上灯光和舞台走位，是她“高能时刻”的代表画面之一。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-white-flowy-dress-spin.jpg" alt="Taylor Swift spinning in white flowy dress">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-white-flowy-dress-spin.jpg" alt="Taylor Swift spinning in white flowy dress" loading="lazy">
           <figcaption class="eras-caption">
             <strong>裙摆翻涌</strong>
             白裙旋转起来的那一秒，像把歌里的每一个高音都变成了光。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-purple-fire-performance.jpg" alt="Taylor Swift in purple dress with fire-like background">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-purple-fire-performance.jpg" alt="Taylor Swift in purple dress with fire-like background" loading="lazy">
           <figcaption class="eras-caption">
             <strong>火焰与紫色</strong>
             舞台后方像火焰一样的光，把情绪推到最炽热的那一格。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-gold-dress-guitar.jpg" alt="Taylor Swift in gold dress playing guitar">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-gold-dress-guitar.jpg" alt="Taylor Swift in gold dress playing guitar" loading="lazy">
           <figcaption class="eras-caption">
             <strong>金色与吉他</strong>
             闪着光的吉他和裙摆，让人突然想起她最初拿着木吉他唱歌的日子。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-closeup-blue-eyes.jpg" alt="Closeup of Taylor Swift blue eyes">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-closeup-blue-eyes.jpg" alt="Closeup of Taylor Swift blue eyes" loading="lazy">
           <figcaption class="eras-caption">
             <strong>近距离的眼神</strong>
             歌词可以记错，但这种被直视到的感觉，很难忘记。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-green-gown-stage.jpg" alt="Taylor Swift in green gown on stage">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-green-gown-stage.jpg" alt="Taylor Swift in green gown on stage" loading="lazy">
           <figcaption class="eras-caption">
             <strong>森林系绿裙</strong>
             像从故事书里走出来的角色，在夜晚的舞台上讲一段关于魔法的歌。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-white-dress-purple-bg.jpg" alt="Taylor Swift in white dress with purple background">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-white-dress-purple-bg.jpg" alt="Taylor Swift in white dress with purple background" loading="lazy">
           <figcaption class="eras-caption">
             <strong>紫色幕布前</strong>
             眼线、红唇和白裙，经典的“泰勒式”戏剧感。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-floral-gown-lights.jpg" alt="Taylor Swift in floral gown under lights">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-floral-gown-lights.jpg" alt="Taylor Swift in floral gown under lights" loading="lazy">
           <figcaption class="eras-caption">
             <strong>花瓣礼服</strong>
             一身花瓣礼服站在灯海中央，很像是为所有听众颁发的一份奖章。
           </figcaption>
         </figure>
 
-        <figure class="eras-photo">
-          <img src="images/taylor-snowy-gown-stage.jpg" alt="Taylor Swift in snowy gown on stage">
+        <figure class="eras-photo" data-gallery="eras">
+          <img src="images/taylor-snowy-gown-stage.jpg" alt="Taylor Swift in snowy gown on stage" loading="lazy">
           <figcaption class="eras-caption">
             <strong>雪落舞台</strong>
             光点像雪一样落在裙摆上，结束却也像另一首歌的开始。
@@ -1283,31 +1480,52 @@
         <p>
           1989 代表的是“我可以重新来过”的勇气，Lover 像是“我可以好好生活”的答案。也许正是因为这样，当我在现实生活里迷茫、开心、委屈或者想要重启的时候，总能在她的歌里找到一个对应的片段，提醒自己：无论现在是哪一个 era，都是故事的一部分。
         </p>
+
+        <details class="egg-note">
+          <summary>写给未来某次重听 1989 的自己</summary>
+          <p>
+            如果你又点开了这张网页，大概又到了需要一点“重新开始感”的时候吧。  
+            也许是工作太满，也许是生活卡在一个说不上来的节点，反正你又把耳机戴上了。
+          </p>
+          <p>
+            那就照旧吧：先从《Style》开始，把通勤路上的风吹一遍；  
+            如果哪天真的觉得撑不住了，就把《Out Of The Woods》放到最大声，  
+            一边走一边想：当时那些以为走不过去的路，现在都成了歌里的背景。
+          </p>
+          <p>
+            等到心情慢慢平一点，再偷偷切到 <strong>Lover</strong>。  
+            去提醒自己：你不是为了“变得完美”而努力，你只是想好好生活、好好爱人、也好好爱自己。  
+            然后把网页关掉，回到你正在过的那一段 era 里去。
+          </p>
+        </details>
       </div>
     </div>
   </section>
 </main>
 
-<!-- 回到顶部按钮 -->
-<button class="scroll-top" type="button" title="回到顶部">↑</button>
-
 <!-- 右下角音乐按钮 + 背景音乐 -->
-<button class="music-toggle" type="button" title="点击播放 / 暂停音乐">♫</button>
+<button class="music-toggle" type="button" title="点击播放 / 暂停音乐">
+  <span class="music-toggle-icon" id="musicIcon">▶</span>
+</button>
+<div class="motion-toggle-label">简洁模式</div>
+<button class="motion-toggle" type="button" title="切换动画多 / 少" aria-pressed="false">✦</button>
+
 <audio id="bg-music" src="audio/taylor-song.mp3" loop></audio>
 
-<!-- 专辑大图弹窗 -->
+<!-- 图片大图弹窗 -->
 <div class="album-modal" aria-hidden="true">
   <div class="album-modal-inner">
     <button class="modal-close" type="button" aria-label="关闭大图">×</button>
     <div class="album-modal-content">
       <img src="" alt="">
+      <div class="modal-nav-hint">点击左右区域或按键盘方向键切换图片</div>
     </div>
     <div class="album-caption"></div>
   </div>
 </div>
 
 <script>
-  // 按钮平滑滚动
+  // 平滑滚动（按钮）
   document.querySelectorAll("[data-scroll-target]").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-scroll-target");
@@ -1327,51 +1545,122 @@
     });
   });
 
-  // 根据滚动高亮导航
-  const sections = document.querySelectorAll("main section[id]");
-  const navLinks = document.querySelectorAll(".nav-link");
+  // 滚动出现动画 + fallback
+  (function() {
+    const sections = document.querySelectorAll(".observe");
+    const scrollHint = document.getElementById("scrollHint");
 
-  window.addEventListener("scroll", () => {
-    let currentId = "";
-    sections.forEach(sec => {
-      const rect = sec.getBoundingClientRect();
-      if (rect.top <= 120 && rect.bottom >= 120) {
-        currentId = "#" + sec.id;
+    if (!("IntersectionObserver" in window)) {
+      sections.forEach(sec => sec.classList.add("in-view"));
+    } else {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+          }
+        });
+      }, { threshold: 0.2, rootMargin: "-10% 0px -20%" });
+
+      sections.forEach(sec => observer.observe(sec));
+
+      // fallback：无论 IO 是否触发，0.8 秒后强制显示，避免某些浏览器空白
+      setTimeout(() => {
+        sections.forEach(sec => sec.classList.add("in-view"));
+      }, 800);
+    }
+
+    // 向下滑动提示：滚动一点就隐藏
+    let hintHidden = false;
+    window.addEventListener("scroll", () => {
+      if (!scrollHint || hintHidden) return;
+      if (window.scrollY > 40) {
+        scrollHint.classList.add("hidden");
+        hintHidden = true;
       }
     });
-    if (currentId) {
-      navLinks.forEach(link => {
-        link.classList.toggle("active", link.getAttribute("href") === currentId);
+  })();
+
+  // 根据滚动高亮导航 + 顶部导航隐藏（移动端）
+  (function() {
+    const sections = document.querySelectorAll("main section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const header = document.querySelector(".site-header");
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    function onScroll() {
+      const currentY = window.scrollY;
+
+      // 高亮导航
+      let currentId = "";
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= 120 && rect.bottom >= 120) {
+          currentId = "#" + sec.id;
+        }
       });
+      if (currentId) {
+        navLinks.forEach(link => {
+          link.classList.toggle("active", link.getAttribute("href") === currentId);
+        });
+      }
+
+      // 移动端下滑隐藏 header，上滑显示
+      if (header) {
+        if (currentY > 80 && currentY > lastScrollY + 5) {
+          header.classList.add("hide-header");
+        } else {
+          header.classList.remove("hide-header");
+        }
+      }
+
+      lastScrollY = currentY;
+      ticking = false;
     }
-  });
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    });
+  })();
 
   // 背景音乐控制
-  const audio = document.getElementById("bg-music");
-  const musicBtn = document.querySelector(".music-toggle");
-  let musicStartedByUser = false;
+  (function() {
+    const audio = document.getElementById("bg-music");
+    const musicBtn = document.querySelector(".music-toggle");
+    const musicIcon = document.getElementById("musicIcon");
+    let musicStartedByUser = false;
 
-  function startMusic() {
-    if (!audio) return;
-    audio.volume = 0.35;
-    audio.play().then(() => {
-      if (musicBtn) {
+    if (!audio || !musicBtn) return;
+
+    function updateIcon() {
+      if (audio.paused) {
+        musicIcon.textContent = "▶";
+        musicBtn.dataset.playing = "false";
+      } else {
+        musicIcon.textContent = "⏸";
         musicBtn.dataset.playing = "true";
       }
-    }).catch(() => {
-      // 某些浏览器可能会拦截自动播放
-    });
-  }
+    }
 
-  if (musicBtn && audio) {
-    // 点击音乐按钮，播放 / 暂停
+    function startMusic() {
+      audio.volume = 0.35;
+      audio.play().then(() => {
+        updateIcon();
+      }).catch(() => {
+        // 自动播放可能会被拦截，静默失败即可
+      });
+    }
+
     musicBtn.addEventListener("click", () => {
       if (audio.paused) {
         startMusic();
         musicStartedByUser = true;
       } else {
         audio.pause();
-        musicBtn.dataset.playing = "false";
+        updateIcon();
       }
     });
 
@@ -1384,99 +1673,133 @@
       window.removeEventListener("click", firstClickHandler);
     };
     window.addEventListener("click", firstClickHandler);
-  }
+  })();
 
-  // 专辑大图弹窗逻辑
-  const albumModal = document.querySelector(".album-modal");
-  const albumModalImg = albumModal.querySelector("img");
-  const albumCaption = albumModal.querySelector(".album-caption");
-  const albumCloseBtn = albumModal.querySelector(".modal-close");
+  // 动效开关（简洁模式）
+  (function() {
+    const motionBtn = document.querySelector(".motion-toggle");
+    const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let reduced = prefersReduced;
+    const stored = localStorage.getItem("tswift-reduced-motion");
+    if (stored !== null) {
+      reduced = stored === "true";
+    }
 
-  function openAlbumModal(card) {
-    const img = card.querySelector("img");
-    const title = card.querySelector(".album-title")?.textContent || "";
-    albumModalImg.src = img.src;
-    albumModalImg.alt = img.alt || title;
-    albumCaption.textContent = title;
-    albumModal.classList.add("open");
-    albumModal.setAttribute("aria-hidden", "false");
-  }
+    function applyState() {
+      document.body.classList.toggle("reduced-motion", reduced);
+      if (motionBtn) {
+        motionBtn.setAttribute("aria-pressed", reduced ? "true" : "false");
+      }
+      if (reduced) {
+        document.querySelectorAll(".observe").forEach(sec => sec.classList.add("in-view"));
+      }
+    }
 
-  function closeAlbumModal() {
-    albumModal.classList.remove("open");
-    albumModal.setAttribute("aria-hidden", "true");
-  }
+    applyState();
 
-  document.querySelectorAll(".album-card").forEach(card => {
-    card.addEventListener("click", () => openAlbumModal(card));
-    card.addEventListener("keydown", e => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openAlbumModal(card);
+    if (motionBtn) {
+      motionBtn.addEventListener("click", () => {
+        reduced = !reduced;
+        localStorage.setItem("tswift-reduced-motion", reduced ? "true" : "false");
+        applyState();
+      });
+    }
+  })();
+
+  // 图片大图弹窗逻辑（专辑 + Eras Tour + 重点封面等）
+  (function() {
+    const modal = document.querySelector(".album-modal");
+    const modalImg = modal.querySelector("img");
+    const albumCaption = modal.querySelector(".album-caption");
+    const modalCloseBtn = modal.querySelector(".modal-close");
+    const modalContent = modal.querySelector(".album-modal-content");
+
+    const lightboxItems = [];
+    let currentIndex = -1;
+    let lastFocusedElement = null;
+
+    // 收集所有需要预览的大图：album-card、eras-photo、data-lightbox-item
+    document.querySelectorAll(".album-card, .eras-photo, [data-lightbox-item]").forEach((el) => {
+      const img = el.querySelector("img");
+      if (!img) return;
+      const titleEl = el.querySelector(".album-title") || el.querySelector("figcaption strong");
+      const title = titleEl ? titleEl.textContent.trim() : img.alt || "";
+      const item = { el, img, title };
+      lightboxItems.push(item);
+      el.dataset.lightboxIndex = String(lightboxItems.length - 1);
+      el.addEventListener("click", () => openModal(Number(el.dataset.lightboxIndex)));
+      el.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal(Number(el.dataset.lightboxIndex));
+        }
+      });
+    });
+
+    function openModal(index) {
+      if (!modal || !modalImg || index < 0 || index >= lightboxItems.length) return;
+      currentIndex = index;
+      const item = lightboxItems[currentIndex];
+      modalImg.src = item.img.src;
+      modalImg.alt = item.img.alt || item.title;
+      albumCaption.textContent = item.title || "";
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      lastFocusedElement = document.activeElement;
+      if (modalCloseBtn) modalCloseBtn.focus();
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      currentIndex = -1;
+      if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+        lastFocusedElement.focus();
+      }
+    }
+
+    function showNext(step) {
+      if (currentIndex < 0 || lightboxItems.length === 0) return;
+      currentIndex = (currentIndex + step + lightboxItems.length) % lightboxItems.length;
+      const item = lightboxItems[currentIndex];
+      modalImg.src = item.img.src;
+      modalImg.alt = item.img.alt || item.title;
+      albumCaption.textContent = item.title || "";
+    }
+
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener("click", closeModal);
+    }
+
+    modal.addEventListener("click", e => {
+      if (e.target === modal) {
+        closeModal();
       }
     });
-  });
 
-  albumModal.addEventListener("click", e => {
-    if (e.target === albumModal) {
-      closeAlbumModal();
-    }
-  });
-
-  if (albumCloseBtn) {
-    albumCloseBtn.addEventListener("click", closeAlbumModal);
-  }
-
-  window.addEventListener("keydown", e => {
-    if (e.key === "Escape" && albumModal.classList.contains("open")) {
-      closeAlbumModal();
-    }
-  });
-
-  // 手机端向下滑动时自动隐藏导航栏 + 回到顶部按钮
-  const siteHeader = document.querySelector(".site-header");
-  const scrollTopBtn = document.querySelector(".scroll-top");
-  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-
-  window.addEventListener("scroll", () => {
-    if (!siteHeader) return;
-    const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
-
-    // 添加 / 移除阴影
-    if (currentY > 10) {
-      siteHeader.classList.add("scrolled");
-    } else {
-      siteHeader.classList.remove("scrolled");
-    }
-
-    // 仅在手机 / 小平板时自动隐藏
-    if (window.innerWidth <= 840) {
-      if (currentY > lastScrollY && currentY > 120) {
-        siteHeader.classList.add("is-hidden");
+    // 点击内容区域左右两侧切换
+    modalContent.addEventListener("click", e => {
+      const bounds = modalContent.getBoundingClientRect();
+      const x = e.clientX - bounds.left;
+      if (x < bounds.width / 2) {
+        showNext(-1);
       } else {
-        siteHeader.classList.remove("is-hidden");
+        showNext(1);
       }
-    } else {
-      siteHeader.classList.remove("is-hidden");
-    }
-
-    // 回到顶部按钮显示逻辑
-    if (scrollTopBtn) {
-      if (currentY > 600) {
-        scrollTopBtn.classList.add("visible");
-      } else {
-        scrollTopBtn.classList.remove("visible");
-      }
-    }
-
-    lastScrollY = currentY;
-  });
-
-  if (scrollTopBtn) {
-    scrollTopBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
     });
-  }
+
+    window.addEventListener("keydown", e => {
+      if (!modal.classList.contains("open")) return;
+      if (e.key === "Escape") {
+        closeModal();
+      } else if (e.key === "ArrowRight") {
+        showNext(1);
+      } else if (e.key === "ArrowLeft") {
+        showNext(-1);
+      }
+    });
+  })();
 </script>
 </body>
 </html>

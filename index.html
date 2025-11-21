@@ -788,16 +788,10 @@
       margin-bottom: 8px;
     }
 
-    /* 滚动出现动画 */
+    /* 滚动出现动画 —— 为兼容手机 Safari，这里保持默认可见 */
     .observe {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .observe.in-view {
       opacity: 1;
-      transform: translateY(0);
+      transform: none;
     }
 
     /* 音乐按钮 */
@@ -828,6 +822,39 @@
 
     .music-toggle[data-playing="true"] {
       filter: brightness(1.08);
+    }
+
+    /* 回到顶部按钮 */
+    .scroll-top {
+      position: fixed;
+      right: 18px;
+      bottom: 74px; /* 在音乐按钮上方 */
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      color: #ff7cc4;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 110;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .scroll-top:active {
+      transform: translateY(1px) scale(0.98);
     }
 
     /* 响应式 */
@@ -1261,6 +1288,9 @@
   </section>
 </main>
 
+<!-- 回到顶部按钮 -->
+<button class="scroll-top" type="button" title="回到顶部">↑</button>
+
 <!-- 右下角音乐按钮 + 背景音乐 -->
 <button class="music-toggle" type="button" title="点击播放 / 暂停音乐">♫</button>
 <audio id="bg-music" src="audio/taylor-song.mp3" loop></audio>
@@ -1296,17 +1326,6 @@
       if (target) target.scrollIntoView({ behavior: "smooth" });
     });
   });
-
-  // 滚动出现动画
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("in-view");
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll(".observe").forEach(sec => observer.observe(sec));
 
   // 根据滚动高亮导航
   const sections = document.querySelectorAll("main section[id]");
@@ -1414,8 +1433,9 @@
     }
   });
 
-  // 手机端向下滑动时自动隐藏导航栏
+  // 手机端向下滑动时自动隐藏导航栏 + 回到顶部按钮
   const siteHeader = document.querySelector(".site-header");
+  const scrollTopBtn = document.querySelector(".scroll-top");
   let lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
 
   window.addEventListener("scroll", () => {
@@ -1440,8 +1460,23 @@
       siteHeader.classList.remove("is-hidden");
     }
 
+    // 回到顶部按钮显示逻辑
+    if (scrollTopBtn) {
+      if (currentY > 600) {
+        scrollTopBtn.classList.add("visible");
+      } else {
+        scrollTopBtn.classList.remove("visible");
+      }
+    }
+
     lastScrollY = currentY;
   });
+
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 </script>
 </body>
 </html>

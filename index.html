@@ -17,9 +17,15 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK SC", "PingFang SC", sans-serif;
-      background: #f7f7fb;
       color: #222;
       line-height: 1.6;
+      /* 柔和粉紫背景 + 光斑 */
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255, 210, 240, 0.9), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(255, 230, 245, 0.85), transparent 55%),
+        radial-gradient(circle at 15% 85%, rgba(214, 225, 255, 0.8), transparent 55%),
+        #f7f0ff;
+      background-attachment: fixed;
     }
 
     img {
@@ -42,8 +48,18 @@
       top: 0;
       z-index: 100;
       backdrop-filter: blur(10px);
-      background: rgba(255,255,255,0.8);
-      border-bottom: 1px solid rgba(200,200,220,0.6);
+      background: rgba(255, 255, 255, 0.86);
+      border-bottom: 1px solid rgba(200, 200, 220, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .site-header.scrolled {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    /* 手机端向下滑动时隐藏 */
+    .site-header.is-hidden {
+      transform: translateY(-100%);
     }
 
     .nav-inner {
@@ -89,6 +105,52 @@
       font-weight: 600;
     }
 
+    /* 全局樱花特效 */
+    .petals {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .petals span {
+      position: absolute;
+      top: -10%;
+      width: 18px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #fff, #ffb3d6 55%, #ff7cc4 100%);
+      border-radius: 70% 25% 70% 25%;
+      opacity: 0.7;
+      filter: blur(0.2px);
+      animation: petalFall 14s linear infinite;
+    }
+
+    .petals span:nth-child(1) { left: 8%;  animation-duration: 16s; animation-delay: 0s;  }
+    .petals span:nth-child(2) { left: 22%; animation-duration: 18s; animation-delay: -4s; }
+    .petals span:nth-child(3) { left: 40%; animation-duration: 15s; animation-delay: -2s; }
+    .petals span:nth-child(4) { left: 60%; animation-duration: 17s; animation-delay: -6s; }
+    .petals span:nth-child(5) { left: 78%; animation-duration: 19s; animation-delay: -8s; }
+    .petals span:nth-child(6) { left: 90%; animation-duration: 20s; animation-delay: -10s; }
+
+    @keyframes petalFall {
+      0% {
+        transform: translate3d(0, -10%, 0) rotateZ(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.8;
+      }
+      60% {
+        transform: translate3d(40px, 80vh, 0) rotateZ(150deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translate3d(-20px, 110vh, 0) rotateZ(220deg);
+        opacity: 0;
+      }
+    }
+
     /* Hero */
     .hero {
       min-height: 80vh;
@@ -96,7 +158,7 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      background: radial-gradient(circle at top left, #ffe0f0 0, #f7f7fb 45%, #e4edff 100%);
+      background: radial-gradient(circle at top left, #ffe0f0 0, rgba(247, 247, 251, 0.9) 45%, #e4edff 100%);
     }
 
     .hero-inner {
@@ -129,8 +191,8 @@
       font-size: 12px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.7);
-      border: 1px solid rgba(230,230,245,0.9);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(230, 230, 245, 0.9);
     }
 
     .hero-btns {
@@ -155,19 +217,19 @@
     .btn-primary {
       background: linear-gradient(120deg, #ff8bcf, #9cb5ff);
       color: #fff;
-      box-shadow: 0 8px 20px rgba(200,140,255,0.4);
+      box-shadow: 0 8px 20px rgba(200, 140, 255, 0.4);
       animation: pulse 2.4s ease-in-out infinite;
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(200,140,255,0.6);
+      box-shadow: 0 12px 28px rgba(200, 140, 255, 0.6);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.9);
+      background: rgba(255, 255, 255, 0.9);
       color: #555;
-      border: 1px solid rgba(210,210,235,0.8);
+      border: 1px solid rgba(210, 210, 235, 0.8);
     }
 
     .btn-secondary:hover {
@@ -182,7 +244,7 @@
     .hero-photo-main {
       border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
       transform: translateY(0);
       transition: transform 0.4s ease;
     }
@@ -195,11 +257,11 @@
       position: absolute;
       bottom: 12px;
       left: -8px;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255, 255, 255, 0.9);
       padding: 8px 14px;
       border-radius: 999px;
       font-size: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
     .hero-lights {
@@ -214,7 +276,7 @@
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,183,234,0.6), transparent 60%);
+      background: radial-gradient(circle, rgba(255, 183, 234, 0.6), transparent 60%);
       animation: floatLight 16s linear infinite;
     }
 
@@ -231,15 +293,15 @@
     @keyframes pulse {
       0% {
         transform: scale(1);
-        box-shadow: 0 8px 20px rgba(200,140,255,0.4);
+        box-shadow: 0 8px 20px rgba(200, 140, 255, 0.4);
       }
       50% {
         transform: scale(1.04);
-        box-shadow: 0 12px 28px rgba(200,140,255,0.6);
+        box-shadow: 0 12px 28px rgba(200, 140, 255, 0.6);
       }
       100% {
         transform: scale(1);
-        box-shadow: 0 8px 20px rgba(200,140,255,0.4);
+        box-shadow: 0 8px 20px rgba(200, 140, 255, 0.4);
       }
     }
 
@@ -271,9 +333,9 @@
     .about-card {
       padding: 14px 16px;
       border-radius: 18px;
-      background: rgba(255,255,255,0.9);
-      border: 1px solid rgba(220,220,240,0.9);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(220, 220, 240, 0.9);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
       transition: transform 0.3s, box-shadow 0.3s;
       font-size: 13px;
     }
@@ -285,7 +347,7 @@
 
     .about-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
     }
 
     /* eras 区块 */
@@ -298,7 +360,7 @@
     .era {
       border-radius: 26px;
       padding: 28px 24px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
       overflow: hidden;
       position: relative;
     }
@@ -330,7 +392,7 @@
       background: #f4eee4;
       padding: 10px;
       border-radius: 22px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
       transition: transform 0.35s, box-shadow 0.35s;
     }
 
@@ -340,7 +402,7 @@
 
     .era-cover-frame:hover {
       transform: translateY(-6px) rotate(-1deg);
-      box-shadow: 0 22px 48px rgba(0,0,0,0.26);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.26);
     }
 
     .era-meta {
@@ -354,8 +416,8 @@
     .tag {
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid rgba(220,220,245,0.9);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(220, 220, 245, 0.9);
     }
 
     .era h3 {
@@ -380,8 +442,8 @@
       font-size: 12px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.9);
-      border: 1px dashed rgba(180,180,220,0.8);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px dashed rgba(180, 180, 220, 0.8);
     }
 
     .era-gallery {
@@ -393,13 +455,13 @@
 
     .era-gallery img {
       border-radius: 16px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
       transition: transform 0.35s, box-shadow 0.35s;
     }
 
     .era-gallery img:hover {
       transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 18px 38px rgba(0,0,0,0.28);
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
     }
 
     /* Lover 区漂浮爱心 */
@@ -419,7 +481,7 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,145,196,0.9), rgba(255,145,196,0.1));
+      background: radial-gradient(circle, rgba(255, 145, 196, 0.9), rgba(255, 145, 196, 0.1));
       clip-path: path("M10.5 3C9.1 1.3 6.9 1 5.4 2.3 3.9 1 1.7 1.3 0.3 3  -0.9 4.5 -0.1 6.9 1.2 8.2l4.2 4.1c0.3 0.3 0.8 0.3 1.1 0l4.2-4.1c1.3-1.3 2.1-3.7 0.9-5.2z");
       opacity: 0.8;
       animation: heartRise 10s linear infinite;
@@ -457,8 +519,8 @@
 
     .album-card {
       border-radius: 22px;
-      background: rgba(255,255,255,0.95);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -491,7 +553,7 @@
 
     .album-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 34px rgba(0,0,0,0.2);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
     }
 
     .album-card::after {
@@ -502,7 +564,7 @@
       font-size: 11px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0, 0, 0, 0.55);
       color: #fff;
       opacity: 0;
       transform: translateY(6px);
@@ -519,7 +581,7 @@
     .album-modal {
       position: fixed;
       inset: 0;
-      background: rgba(5,5,20,0.78);
+      background: rgba(5, 5, 20, 0.78);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -548,7 +610,7 @@
     .album-modal-content {
       border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
       background: #000;
       transform: translateY(10px) scale(0.94);
       transition: transform 0.3s ease;
@@ -580,14 +642,14 @@
       height: 32px;
       border-radius: 50%;
       border: none;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0, 0, 0, 0.75);
       color: #fff;
       cursor: pointer;
       font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
     }
 
     /* Eras Tour 区 */
@@ -595,31 +657,32 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
+      align-items: flex-start;
     }
 
     .eras-photo {
       position: relative;
       border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
       cursor: default;
       background: #000;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
-      aspect-ratio: 3 / 5;           /* 固定纵横比，避免底部大黑块 */
     }
 
+    /* 关键：图片高度由自己决定，避免下面出现黑条 */
     .eras-photo img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      display: block;
       object-fit: cover;
       transform: scale(1.02);
       transition: transform 0.35s ease;
-      display: block;
     }
 
     .eras-photo:hover {
       transform: translateY(-8px) rotate(-0.5deg);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
     }
 
     .eras-photo:hover img {
@@ -634,7 +697,7 @@
       padding: 12px 12px 10px;
       font-size: 12px;
       color: #fdfdfd;
-      background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.05));
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.05));
     }
 
     .eras-caption strong {
@@ -689,13 +752,13 @@
       padding: 20px 18px;
       background: repeating-linear-gradient(
         -45deg,
-        rgba(255,255,255,0.96),
-        rgba(255,255,255,0.96) 10px,
-        rgba(255,238,250,0.96) 10px,
-        rgba(255,238,250,0.96) 20px
+        rgba(255, 255, 255, 0.96),
+        rgba(255, 255, 255, 0.96) 10px,
+        rgba(255, 238, 250, 0.96) 10px,
+        rgba(255, 238, 250, 0.96) 20px
       );
-      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-      border: 1px solid rgba(240,200,255,0.7);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(240, 200, 255, 0.7);
       position: relative;
       overflow: hidden;
     }
@@ -708,7 +771,7 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,164,205,0.6), transparent 60%);
+      background: radial-gradient(circle, rgba(255, 164, 205, 0.6), transparent 60%);
     }
 
     .note-card h3 {
@@ -725,10 +788,16 @@
       margin-bottom: 8px;
     }
 
-    /* 注意：不再用 .observe 做透明度动画，所有区块默认可见 */
+    /* 滚动出现动画 */
     .observe {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .observe.in-view {
       opacity: 1;
-      transform: none;
+      transform: translateY(0);
     }
 
     /* 音乐按钮 */
@@ -744,7 +813,7 @@
       font-size: 20px;
       background: linear-gradient(135deg, #ff8bcf, #9cb5ff);
       color: #fff;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -754,7 +823,7 @@
 
     .music-toggle:hover {
       transform: translateY(-3px);
-      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
     }
 
     .music-toggle[data-playing="true"] {
@@ -798,6 +867,11 @@
   </style>
 </head>
 <body>
+<!-- 樱花层 -->
+<div class="petals" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
 <header class="site-header">
   <div class="nav-inner">
     <div class="logo">Taylor Swift</div>
@@ -805,7 +879,7 @@
       <ul>
         <li><a href="#home" class="nav-link active">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#highlighted" class="nav-link">1989 &amp; Lover</a></li>
+        <li><a href="#highlighted" class="nav-link">1989 & Lover</a></li>
         <li><a href="#other-albums" class="nav-link">Other Albums</a></li>
         <li><a href="#eras-tour" class="nav-link">Eras Tour</a></li>
         <li><a href="#timeline" class="nav-link">Timeline</a></li>
@@ -834,7 +908,7 @@
         </div>
         <div class="hero-btns">
           <button class="btn-primary" data-scroll-target="#highlighted">
-            去看看 1989 &amp; Lover ✨
+            去看看 1989 & Lover ✨
           </button>
           <button class="btn-secondary" data-scroll-target="#other-albums">
             先浏览其他专辑
@@ -1223,7 +1297,18 @@
     });
   });
 
-  // 根据滚动高亮导航（不影响内容显示）
+  // 滚动出现动画
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll(".observe").forEach(sec => observer.observe(sec));
+
+  // 根据滚动高亮导航
   const sections = document.querySelectorAll("main section[id]");
   const navLinks = document.querySelectorAll(".nav-link");
 
@@ -1254,10 +1339,13 @@
       if (musicBtn) {
         musicBtn.dataset.playing = "true";
       }
-    }).catch(() => {});
+    }).catch(() => {
+      // 某些浏览器可能会拦截自动播放
+    });
   }
 
   if (musicBtn && audio) {
+    // 点击音乐按钮，播放 / 暂停
     musicBtn.addEventListener("click", () => {
       if (audio.paused) {
         startMusic();
@@ -1268,6 +1356,7 @@
       }
     });
 
+    // 用户第一次点击页面任何地方时，如果还没启动过音乐，就尝试播放
     const firstClickHandler = () => {
       if (!musicStartedByUser) {
         startMusic();
@@ -1286,8 +1375,7 @@
 
   function openAlbumModal(card) {
     const img = card.querySelector("img");
-    const titleEl = card.querySelector(".album-title");
-    const title = titleEl ? titleEl.textContent : "";
+    const title = card.querySelector(".album-title")?.textContent || "";
     albumModalImg.src = img.src;
     albumModalImg.alt = img.alt || title;
     albumCaption.textContent = title;
@@ -1324,6 +1412,35 @@
     if (e.key === "Escape" && albumModal.classList.contains("open")) {
       closeAlbumModal();
     }
+  });
+
+  // 手机端向下滑动时自动隐藏导航栏
+  const siteHeader = document.querySelector(".site-header");
+  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+  window.addEventListener("scroll", () => {
+    if (!siteHeader) return;
+    const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    // 添加 / 移除阴影
+    if (currentY > 10) {
+      siteHeader.classList.add("scrolled");
+    } else {
+      siteHeader.classList.remove("scrolled");
+    }
+
+    // 仅在手机 / 小平板时自动隐藏
+    if (window.innerWidth <= 840) {
+      if (currentY > lastScrollY && currentY > 120) {
+        siteHeader.classList.add("is-hidden");
+      } else {
+        siteHeader.classList.remove("is-hidden");
+      }
+    } else {
+      siteHeader.classList.remove("is-hidden");
+    }
+
+    lastScrollY = currentY;
   });
 </script>
 </body>

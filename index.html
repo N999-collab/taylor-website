@@ -556,6 +556,7 @@
     }
 
     .album-modal-content {
+      position: relative; /* 为左右点击区域做容器 */
       border-radius: 22px;
       overflow: hidden;
       box-shadow: 0 20px 50px rgba(0,0,0,0.6);
@@ -574,6 +575,23 @@
       max-height: 80vh;
       object-fit: contain;
       background: #000;
+    }
+
+    /* 左右切换点击区域（透明遮罩） */
+    .album-modal-nav {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      cursor: pointer;
+    }
+
+    .album-modal-nav-left {
+      left: 0;
+    }
+
+    .album-modal-nav-right {
+      right: 0;
     }
 
     .album-caption {
@@ -621,6 +639,7 @@
       width: 100%;
       height: auto;
       object-fit: cover;
+      cursor: pointer; /* 提示可以点击 */
     }
 
     .eras-photo:hover {
@@ -1498,12 +1517,15 @@
 <button class="scroll-top" type="button" aria-label="回到顶部">↑</button>
 <audio id="bg-music" src="audio/taylor-song.mp3" loop></audio>
 
-<!-- 专辑大图弹窗 -->
+<!-- 专辑大图弹窗（同时用于 Eras Tour 图片画廊） -->
 <div class="album-modal" aria-hidden="true">
   <div class="album-modal-inner">
     <button class="modal-close" type="button" aria-label="关闭大图">×</button>
     <div class="album-modal-content">
+      <!-- 左右半屏点击切换 -->
+      <div class="album-modal-nav album-modal-nav-left"></div>
       <img src="" alt="">
+      <div class="album-modal-nav album-modal-nav-right"></div>
     </div>
     <div class="album-caption"></div>
   </div>
@@ -1644,15 +1666,24 @@
     window.addEventListener("click", firstClickHandler);
   }
 
-  // 专辑大图弹窗逻辑
+  // 专辑大图弹窗 + Eras Tour 画廊逻辑
   const albumModal = document.querySelector(".album-modal");
   const albumModalImg = albumModal.querySelector("img");
   const albumCaption = albumModal.querySelector(".album-caption");
   const albumCloseBtn = albumModal.querySelector(".modal-close");
+  const navLeft = albumModal.querySelector(".album-modal-nav-left");
+  const navRight = albumModal.querySelector(".album-modal-nav-right");
+
+  // Eras Tour 图片集合
+  const erasImages = Array.from(document.querySelectorAll(".eras-tour-grid img"));
+  let currentGalleryIndex = -1;
+  let inGalleryMode = false;
 
   function openAlbumModal(card) {
     const img = card.querySelector("img");
     const title = card.querySelector(".album-title")?.textContent || "";
+    inGalleryMode = false;
+    currentGalleryIndex = -1;
     albumModalImg.src = img.src;
     albumModalImg.alt = img.alt || title;
     albumCaption.textContent = title;
@@ -1660,11 +1691,37 @@
     albumModal.setAttribute("aria-hidden", "false");
   }
 
+  function openGalleryAt(index) {
+    if (!erasImages.length) return;
+    inGalleryMode = true;
+    const total = erasImages.length;
+    currentGalleryIndex = (index + total) % total;
+    const imgEl = erasImages[currentGalleryIndex];
+    albumModalImg.src = imgEl.src;
+    albumModalImg.alt = imgEl.alt || "";
+    albumCaption.textContent = ""; // 画廊模式下不显示下方标题
+    albumModal.classList.add("open");
+    albumModal.setAttribute("aria-hidden", "false");
+  }
+
+  function showPrev() {
+    if (!inGalleryMode) return;
+    openGalleryAt(currentGalleryIndex - 1);
+  }
+
+  function showNext() {
+    if (!inGalleryMode) return;
+    openGalleryAt(currentGalleryIndex + 1);
+  }
+
   function closeAlbumModal() {
     albumModal.classList.remove("open");
     albumModal.setAttribute("aria-hidden", "true");
+    inGalleryMode = false;
+    currentGalleryIndex = -1;
   }
 
+  // Album 区：点击卡片放大
   document.querySelectorAll(".album-card").forEach(card => {
     card.addEventListener("click", () => openAlbumModal(card));
     card.addEventListener("keydown", e => {
@@ -1675,6 +1732,12 @@
     });
   });
 
+  // Eras Tour 区：点击图片进入画廊
+  erasImages.forEach((img, idx) => {
+    img.addEventListener("click", () => openGalleryAt(idx));
+  });
+
+  // 模态框点击关闭 & 左右切换
   albumModal.addEventListener("click", e => {
     if (e.target === albumModal) {
       closeAlbumModal();
@@ -1685,9 +1748,24 @@
     albumCloseBtn.addEventListener("click", closeAlbumModal);
   }
 
+  if (navLeft) {
+    navLeft.addEventListener("click", showPrev);
+  }
+  if (navRight) {
+    navRight.addEventListener("click", showNext);
+  }
+
+  // 键盘事件：Esc 关闭，左右键切换（仅画廊模式）
   window.addEventListener("keydown", e => {
     if (e.key === "Escape" && albumModal.classList.contains("open")) {
       closeAlbumModal();
+      return;
+    }
+    if (!albumModal.classList.contains("open") || !inGalleryMode) return;
+    if (e.key === "ArrowLeft") {
+      showPrev();
+    } else if (e.key === "ArrowRight") {
+      showNext();
     }
   });
 
@@ -1772,8 +1850,8 @@
         // 彩蛋一：提示不自动消失
         showToast("恭喜你发现了彩蛋一！", 0);
       } else if (id === "2") {
-        // 彩蛋二：提示一秒后消失
-        showToast("恭喜你发现了彩蛋二！", 1000);
+        // 彩蛋二：逻辑与彩蛋一一致，不自动消失
+        showToast("恭喜你发现了彩蛋二！", 0);
       } else {
         eggToast.classList.remove("show");
       }

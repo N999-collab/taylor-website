@@ -727,7 +727,73 @@
       margin-bottom: 8px;
     }
 
-    /* 彩蛋区域 */
+    /* 原有的“写给未来某次重听 1989 的自己”折叠块 */
+    .egg-note {
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+    }
+
+    .egg-note summary {
+      cursor: pointer;
+      list-style: none;
+      outline: none;
+      padding: 4px 0;
+      font-weight: 600;
+    }
+
+    .egg-note summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .egg-note summary::before {
+      content: "☞ ";
+      opacity: 0.7;
+    }
+
+    .egg-note p {
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    /* 彩蛋触发小按钮 */
+    .egg-links {
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .egg-chip {
+      border: none;
+      background: rgba(255,255,255,0.8);
+      border-radius: 999px;
+      padding: 4px 10px;
+      cursor: pointer;
+      color: #ff7fbf;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .egg-chip span {
+      font-size: 10px;
+      opacity: 0.8;
+    }
+
+    .egg-chip:hover {
+      transform: translateY(-1px);
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.14);
+    }
+
+    /* 彩蛋：给看到这里的你（卡片本体） */
     .friends-egg {
       margin-top: 22px;
       border-radius: 22px;
@@ -738,6 +804,9 @@
       background-size: cover;
       background-position: center;
       color: #fff;
+      cursor: pointer;
+      transform: translateY(0) scale(1);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
     }
 
     .friends-egg::before {
@@ -765,6 +834,132 @@
 
     .friends-egg p {
       margin-bottom: 6px;
+    }
+
+    .friends-egg:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+    }
+
+    /* 彩蛋弹窗 */
+    .egg-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,20,0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 220;
+      backdrop-filter: blur(6px);
+    }
+
+    .egg-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .egg-modal-inner {
+      position: relative;
+      max-width: min(640px, 92vw);
+      max-height: 90vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .egg-modal-content {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      background-size: cover;
+      background-position: center;
+      transform: translateY(10px) scale(0.94);
+      transition: transform 0.3s ease;
+      width: 100%;
+    }
+
+    .egg-modal.open .egg-modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    .egg-modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(0,0,0,0.35), rgba(0,0,0,0.82));
+    }
+
+    .egg-modal-text {
+      position: relative;
+      z-index: 1;
+      padding: 18px 18px 16px;
+      color: #fdfdfd;
+      font-size: 14px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .egg-modal-banner {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    .egg-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .egg-modal-text p {
+      margin-bottom: 8px;
+      line-height: 1.7;
+    }
+
+    .egg-modal-close {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      z-index: 2;
+    }
+
+    .egg-toast {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translate(-50%, -8px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 3;
+    }
+
+    .egg-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
     /* 滚动出现动画 */
@@ -1260,10 +1455,34 @@
         <p>
           1989 代表的是“我可以重新来过”的勇气，Lover 像是“我可以好好生活”的答案。也许正是因为这样，当我在现实生活里迷茫、开心、委屈或者想要重启的时候，总能在她的歌里找到一个对应的片段，提醒自己：无论现在是哪一个 era，都是故事的一部分。
         </p>
+
+        <!-- 原来的折叠文字，仍然保留 -->
+        <details class="egg-note">
+          <summary>写给未来某次重听 1989 的自己</summary>
+          <p>
+            也许是某一个加班很晚的晚上，也许是某一次突然很想逃离现在的生活，你点开 1989 的时候，可能已经不再是现在的心情了。
+          </p>
+          <p>
+            但希望那时候的你，听到这些歌的时候，不只是想起那些让你心里一紧的画面，也能想起你当初有多喜欢这种「可以重新开始」的感觉。就算生活一团乱，你还是有能力给自己按下重启键。
+          </p>
+          <p>
+            如果那天你真的又点开了这张专辑，就当是给过去的自己一个小小的回应吧：我还在努力生活，而且我依然愿意为喜欢的东西心动。
+          </p>
+        </details>
+
+        <!-- 新增：彩蛋一 & 彩蛋二 的小按钮 -->
+        <div class="egg-links">
+          <button class="egg-chip" type="button" data-egg-id="1">
+            <span>★</span> 彩蛋一
+          </button>
+          <button class="egg-chip" type="button" data-egg-id="2">
+            <span>★</span> 彩蛋二
+          </button>
+        </div>
       </div>
 
-      <!-- 彩蛋：给朋友的小话 -->
-      <div class="friends-egg">
+      <!-- 彩蛋 0：给看到这里的你（整体可点击放大） -->
+      <div class="friends-egg" data-egg-id="0" tabindex="0" role="button" aria-label="给看到这里的你（点击放大）">
         <div class="friends-egg-inner">
           <div class="friends-egg-tag">secret note · 给看到这里的你</div>
           <p>
@@ -1291,6 +1510,18 @@
       <img src="" alt="">
     </div>
     <div class="album-caption"></div>
+  </div>
+</div>
+
+<!-- 彩蛋弹窗 -->
+<div class="egg-modal" aria-hidden="true">
+  <div class="egg-modal-inner">
+    <button class="egg-modal-close" type="button" aria-label="关闭彩蛋">×</button>
+    <div class="egg-modal-content">
+      <div class="egg-modal-overlay"></div>
+      <div class="egg-toast" id="eggToast"></div>
+      <div class="egg-modal-text" id="eggModalText"></div>
+    </div>
   </div>
 </div>
 
@@ -1463,6 +1694,144 @@
       closeAlbumModal();
     }
   });
+
+  // 彩蛋弹窗逻辑
+  (function () {
+    const eggModal = document.querySelector(".egg-modal");
+    const eggContent = eggModal.querySelector(".egg-modal-content");
+    const eggText = document.getElementById("eggModalText");
+    const eggToast = document.getElementById("eggToast");
+    const eggCloseBtn = eggModal.querySelector(".egg-modal-close");
+
+    const eggData = {
+      "0": {
+        bg: "images/taylor-floral-gown-lights.jpg",
+        html: `
+          <div class="egg-modal-banner">secret note</div>
+          <div class="egg-modal-title">给看到这里的你</div>
+          <p>
+            如果你是从我发给你的链接点进来的，谢谢你愿意逛完这一整页。以后当你再听到她的歌，或许可以顺便想起，我们一起聊这些歌的那天。
+          </p>
+          <p>
+            也希望你每一个自己的 era，都过得很认真、也很开心。♡
+          </p>
+        `
+      },
+      "1": {
+        bg: "images/1989tv-cover.jpg",
+        html: `
+          <div class="egg-modal-banner">easter egg 1</div>
+          <div class="egg-modal-title">写给未来某次重听 1989 的自己</div>
+          <p>
+            也许是某一个加班很晚的晚上，也许是某一次突然很想逃离现在的生活，你点开 1989 的时候，可能已经不再是现在的心情了。
+          </p>
+          <p>
+            但希望那时候的你，听到这些歌的时候，不只是想起那些让你心里一紧的画面，也能想起你当初有多喜欢这种「可以重新开始」的感觉。就算生活一团乱，你还是有能力给自己按下重启键。
+          </p>
+          <p>
+            如果那天你真的又点开了这张专辑，就当是给过去的自己一个小小的回应吧：我还在努力生活，而且我依然愿意为喜欢的东西心动。
+          </p>
+        `
+      },
+      "2": {
+        bg: "images/taylor-green-field-soft-pink.jpg",
+        html: `
+          <div class="egg-modal-banner">easter egg 2</div>
+          <div class="egg-modal-title">给正在生活里的你</div>
+          <p>
+            你能翻到这里，其实已经很厉害了。说明你愿意为一件小小的、完全跟工作无关的事情，花一点点时间和好奇心。
+          </p>
+          <p>
+            生活有时候会很吵，很忙，很赶时间，但希望你偶尔也能给自己留一小段「只属于自己」的时刻——哪怕只是戴上耳机，随便挑一首喜欢的歌，从头到尾听完。
+          </p>
+          <p>
+            如果最近的日子有点难熬，就先答应我一件小事：不要因为一段糟糕的时光，否定掉整个人生。你已经比自己以为的更勇敢、更温柔，也更值得被温柔对待。
+          </p>
+          <p>
+            很感谢你出现在我的生活里，也谢谢你愿意和我一起分享这点关于歌和故事的小快乐。愿你接下来的每一个 era，都能有让你想起就会微笑的画面。
+          </p>
+        `
+      }
+    };
+
+    function showToast(message, autoHideMs) {
+      if (!eggToast) return;
+      eggToast.textContent = message;
+      eggToast.classList.add("show");
+      if (autoHideMs) {
+        setTimeout(() => {
+          eggToast.classList.remove("show");
+        }, autoHideMs);
+      }
+    }
+
+    function openEggModal(id) {
+      const data = eggData[id];
+      if (!data) return;
+
+      eggContent.style.backgroundImage = `url('${data.bg}')`;
+
+      // 不同彩蛋的提示逻辑
+      if (id === "1") {
+        // 彩蛋一：立刻弹出提示，不自动消失
+        showToast("恭喜你发现了彩蛋一！", 0);
+        eggText.innerHTML = data.html;
+      } else if (id === "2") {
+        // 彩蛋二：先只显示提示，一秒后隐藏提示并显示正文
+        eggText.innerHTML = "";
+        showToast("恭喜你发现了彩蛋二！", 1000);
+        setTimeout(() => {
+          eggText.innerHTML = data.html;
+        }, 1000);
+      } else {
+        // 彩蛋 0：不给编号提示，只放大显示
+        eggToast.classList.remove("show");
+        eggText.innerHTML = data.html;
+      }
+
+      eggModal.classList.add("open");
+      eggModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeEggModal() {
+      eggModal.classList.remove("open");
+      eggModal.setAttribute("aria-hidden", "true");
+      eggToast.classList.remove("show");
+      eggText.innerHTML = "";
+    }
+
+    document.querySelectorAll("[data-egg-id]").forEach(trigger => {
+      trigger.addEventListener("click", () => {
+        const id = trigger.getAttribute("data-egg-id");
+        openEggModal(id);
+      });
+
+      // 键盘可访问（例如 friends-egg）
+      trigger.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          const id = trigger.getAttribute("data-egg-id");
+          openEggModal(id);
+        }
+      });
+    });
+
+    eggModal.addEventListener("click", e => {
+      if (e.target === eggModal) {
+        closeEggModal();
+      }
+    });
+
+    if (eggCloseBtn) {
+      eggCloseBtn.addEventListener("click", closeEggModal);
+    }
+
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape" && eggModal.classList.contains("open")) {
+        closeEggModal();
+      }
+    });
+  })();
 </script>
 </body>
 </html>

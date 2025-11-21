@@ -590,11 +590,12 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     }
 
-    /* Eras Tour 区 */
+    /* Eras Tour 区（保持原视觉，修兼容性） */
     .eras-tour-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
+      margin-top: 24px;
     }
 
     .eras-photo {
@@ -609,7 +610,8 @@
 
     .eras-photo img {
       width: 100%;
-      height: 100%;
+      height: auto;        /* 关键：从 100% 改成 auto，避免高度被压没 */
+      display: block;
       object-fit: cover;
       transform: scale(1.02);
       transition: transform 0.35s ease;
@@ -797,6 +799,13 @@
 
       .album-modal-inner {
         max-width: 94vw;
+      }
+    }
+
+    /* 小屏幕下 Eras Tour 单列显示，更适合手机宽度 */
+    @media (max-width: 768px) {
+      .eras-tour-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>

@@ -1699,7 +1699,8 @@
     const imgEl = erasImages[currentGalleryIndex];
     albumModalImg.src = imgEl.src;
     albumModalImg.alt = imgEl.alt || "";
-    albumCaption.textContent = ""; // 画廊模式下不显示下方标题
+    // 这里是这次唯一的功能修改：放大后给出提示
+    albumCaption.textContent = "小提示：点击图片左侧切换上一张，点击右侧切换下一张。";
     albumModal.classList.add("open");
     albumModal.setAttribute("aria-hidden", "false");
   }

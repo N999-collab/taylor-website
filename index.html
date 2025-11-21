@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Taylor Swift · 专题网页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK SC", "PingFang SC", sans-serif;
+      background: #f7f7fb;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .section {
+      padding: 80px 16px;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* 顶部导航 */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.8);
+      border-bottom: 1px solid rgba(200,200,220,0.6);
+    }
+
+    .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #444;
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      transition: background 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    nav a:hover {
+      background: linear-gradient(90deg, #ffd3ec, #cbd9ff);
+      color: #222;
+      transform: translateY(-1px);
+    }
+
+    nav a.active {
+      background: linear-gradient(90deg, #ffb6df, #9fb4ff);
+      color: #222;
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at top left, #ffe0f0 0, #f7f7fb 45%, #e4edff 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(230,230,245,0.9);
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 10px 18px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #ff8bcf, #9cb5ff);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(200,140,255,0.4);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(200,140,255,0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.9);
+      color: #555;
+      border: 1px solid rgba(210,210,235,0.8);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: #fff;
+    }
+
+    .hero-photo {
+      position: relative;
+    }
+
+    .hero-photo-main {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+      transform: translateY(0);
+      transition: transform 0.4s ease;
+    }
+
+    .hero-photo-main:hover {
+      transform: translateY(-6px);
+    }
+
+    .hero-floating-tag {
+      position: absolute;
+      bottom: 12px;
+      left: -8px;
+      background: rgba(255,255,255,0.9);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .hero-lights {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-lights span {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,183,234,0.6), transparent 60%);
+      animation: floatLight 16s linear infinite;
+    }
+
+    .hero-lights span:nth-child(1) { top: -40px; left: 10%; }
+    .hero-lights span:nth-child(2) { top: 60%; right: -40px; animation-delay: -4s; }
+    .hero-lights span:nth-child(3) { bottom: -40px; left: 40%; animation-delay: -8s; }
+
+    @keyframes floatLight {
+      0%   { transform: translate3d(0, 0, 0); opacity: 0.7; }
+      50%  { transform: translate3d(-30px, -40px, 0); opacity: 0.4; }
+      100% { transform: translate3d(0, 0, 0); opacity: 0.7; }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 8px 20px rgba(200,140,255,0.4);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 12px 28px rgba(200,140,255,0.6);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 8px 20px rgba(200,140,255,0.4);
+      }
+    }
+
+    /* About */
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: flex-start;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 24px;
+    }
+
+    .about-cards {
+      display: grid;
+      gap: 14px;
+    }
+
+    .about-card {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(220,220,240,0.9);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+      font-size: 13px;
+    }
+
+    .about-card strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .about-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+    }
+
+    /* eras 区块 */
+    .eras-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .era {
+      border-radius: 26px;
+      padding: 28px 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .era-1989 {
+      background: linear-gradient(135deg, #fefaf3, #d4e8ff);
+    }
+
+    .era-lover {
+      background: radial-gradient(circle at top, #ffe2f7, #d6e4ff);
+    }
+
+    .era-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .era-1989 .era-main {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    }
+
+    .era-cover {
+      position: relative;
+    }
+
+    .era-cover-frame {
+      background: #f4eee4;
+      padding: 10px;
+      border-radius: 22px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      transition: transform 0.35s, box-shadow 0.35s;
+    }
+
+    .era-cover-frame img {
+      border-radius: 14px;
+    }
+
+    .era-cover-frame:hover {
+      transform: translateY(-6px) rotate(-1deg);
+      box-shadow: 0 22px 48px rgba(0,0,0,0.26);
+    }
+
+    .era-meta {
+      font-size: 13px;
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(220,220,245,0.9);
+    }
+
+    .era h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .era-desc {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 14px;
+    }
+
+    .song-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .song-pill {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.9);
+      border: 1px dashed rgba(180,180,220,0.8);
+    }
+
+    .era-gallery {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .era-gallery img {
+      border-radius: 16px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+      transition: transform 0.35s, box-shadow 0.35s;
+    }
+
+    .era-gallery img:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 18px 38px rgba(0,0,0,0.28);
+    }
+
+    /* Lover 区漂浮爱心 */
+    .era-lover {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lover-hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .lover-hearts span {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,145,196,0.9), rgba(255,145,196,0.1));
+      clip-path: path("M10.5 3C9.1 1.3 6.9 1 5.4 2.3 3.9 1 1.7 1.3 0.3 3  -0.9 4.5 -0.1 6.9 1.2 8.2l4.2 4.1c0.3 0.3 0.8 0.3 1.1 0l4.2-4.1c1.3-1.3 2.1-3.7 0.9-5.2z");
+      opacity: 0.8;
+      animation: heartRise 10s linear infinite;
+    }
+
+    .lover-hearts span:nth-child(1) { left: 10%; bottom: -10%; animation-delay: 0s; }
+    .lover-hearts span:nth-child(2) { left: 35%; bottom: -15%; animation-delay: -3s; }
+    .lover-hearts span:nth-child(3) { right: 20%; bottom: -12%; animation-delay: -6s; }
+    .lover-hearts span:nth-child(4) { right: 5%; bottom: -18%; animation-delay: -9s; }
+
+    @keyframes heartRise {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.9;
+      }
+      70% {
+        transform: translateY(-140px) scale(1.1);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-180px) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    /* 其他专辑区 */
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 20px;
+    }
+
+    .album-card {
+      border-radius: 22px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .album-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .album-body {
+      padding: 12px 14px 14px;
+      font-size: 13px;
+    }
+
+    .album-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .album-meta {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .album-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.2);
+    }
+
+    .album-card::after {
+      content: "点击查看大图";
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+    }
+
+    .album-card:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Album Modal */
+    .album-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,20,0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 200;
+      backdrop-filter: blur(6px);
+    }
+
+    .album-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .album-modal-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .album-modal-content {
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      background: #000;
+      transform: translateY(10px) scale(0.94);
+      transition: transform 0.3s ease;
+    }
+
+    .album-modal.open .album-modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    .album-modal-content img {
+      width: 100%;
+      height: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .album-caption {
+      color: #f5f5f5;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+
+    /* Eras Tour 区 */
+    .eras-tour-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .eras-photo {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      cursor: default;
+      background: #000;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .eras-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 0.35s ease;
+    }
+
+    .eras-photo:hover {
+      transform: translateY(-8px) rotate(-0.5deg);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    }
+
+    .eras-photo:hover img {
+      transform: scale(1.07);
+    }
+
+    .eras-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 12px 12px 10px;
+      font-size: 12px;
+      color: #fdfdfd;
+      background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.05));
+    }
+
+    .eras-caption strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* 时间线 */
+    .timeline {
+      position: relative;
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 6px;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(#ff8bcf, #9cb5ff);
+      opacity: 0.7;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -1px;
+      top: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #ff89c8;
+    }
+
+    .timeline-year {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* My Thoughts */
+    .note-card {
+      border-radius: 22px;
+      padding: 20px 18px;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.96),
+        rgba(255,255,255,0.96) 10px,
+        rgba(255,238,250,0.96) 10px,
+        rgba(255,238,250,0.96) 20px
+      );
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      border: 1px solid rgba(240,200,255,0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .note-card::before {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,164,205,0.6), transparent 60%);
+    }
+
+    .note-card h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .note-card p {
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 8px;
+    }
+
+    /* 滚动出现动画 */
+    .observe {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .observe.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 音乐按钮 */
+    .music-toggle {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      background: linear-gradient(135deg, #ff8bcf, #9cb5ff);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 120;
+      transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+    }
+
+    .music-toggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+    }
+
+    .music-toggle[data-playing="true"] {
+      filter: brightness(1.08);
+    }
+
+    /* 响应式 */
+    @media (max-width: 840px) {
+      .hero-inner,
+      .two-col,
+      .era-main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding-top: 96px;
+      }
+
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      nav ul {
+        justify-content: flex-start;
+      }
+
+      .era {
+        padding: 22px 18px;
+      }
+
+      .album-modal-inner {
+        max-width: 94vw;
+      }
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="nav-inner">
+    <div class="logo">Taylor Swift</div>
+    <nav>
+      <ul>
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#highlighted" class="nav-link">1989 & Lover</a></li>
+        <li><a href="#other-albums" class="nav-link">Other Albums</a></li>
+        <li><a href="#eras-tour" class="nav-link">Eras Tour</a></li>
+        <li><a href="#timeline" class="nav-link">Timeline</a></li>
+        <li><a href="#thoughts" class="nav-link">My Thoughts</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section id="home" class="hero section observe">
+    <div class="hero-lights">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="container hero-inner">
+      <div>
+        <h1 class="hero-title">Taylor Swift</h1>
+        <p class="hero-subtitle">
+          美国创作型歌手。用一张张专辑，把青春、爱情、自我怀疑和重生写进歌里。
+        </p>
+        <div class="hero-badges">
+          <span class="badge">Songwriter</span>
+          <span class="badge">Storyteller</span>
+          <span class="badge">Eras Tour</span>
+        </div>
+        <div class="hero-btns">
+          <button class="btn-primary" data-scroll-target="#highlighted">
+            去看看 1989 & Lover ✨
+          </button>
+          <button class="btn-secondary" data-scroll-target="#other-albums">
+            先浏览其他专辑
+          </button>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <div class="hero-photo-main">
+          <!-- 首页大图：你命名的 1989封面.jpg -->
+          <img src="images/1989封面.jpg" alt="Taylor Swift 1989 Taylor's Version cover">
+        </div>
+        <div class="hero-floating-tag">
+          在海风里，开始属于自己的 1989 时代。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section observe">
+    <div class="container two-col">
+      <div>
+        <h2 class="section-title">关于泰勒 · 一点点背景</h2>
+        <p class="section-subtitle">
+          从乡村音乐起步，到流行乐、独立民谣、合成器流行。她不断换上新的音乐“皮肤”，但始终保持一个身份：把故事写进歌里的创作者。
+        </p>
+        <p>
+          她的作品里有校园小事、暗恋与失恋，也有自省、女性视角、创作者与行业的关系。不同时期的专辑，就像不同章节的日记本——
+          <strong>《1989 (Taylor's Version)》</strong> 和 <strong>《Lover》</strong>，正是这本日记里两段风格截然不同、却都很耀眼的章节。
+        </p>
+      </div>
+      <div class="about-cards">
+        <div class="about-card">
+          <strong>创作型歌手 Songwriter</strong>
+          多数歌曲由她亲自参与作词作曲，擅长用细节和时间线讲故事。
+        </div>
+        <div class="about-card">
+          <strong>音乐奖项</strong>
+          多次获得格莱美年度专辑等重量级奖项，是当代流行乐坛的标志性人物之一。
+        </div>
+        <div class="about-card">
+          <strong>重录计划 Taylor's Version</strong>
+          为了拥有自己作品的主导权，她开启专辑重录计划，这是创作者争取权益的一次重要示范。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlighted Eras -->
+  <section id="highlighted" class="section observe">
+    <div class="container">
+      <h2 class="section-title">重点篇章：1989 (Taylor's Version) &amp; Lover</h2>
+      <p class="section-subtitle">
+        两张都带着“天空”的专辑：一张是海风和城市霓虹，一张是粉雾和柔软告白。
+      </p>
+
+      <div class="eras-wrapper">
+        <!-- 1989 -->
+        <article class="era era-1989">
+          <div class="era-main">
+            <div class="era-cover">
+              <div class="era-cover-frame">
+                <img src="images/1989tv-cover.jpg" alt="1989 Taylor's Version album cover">
+              </div>
+            </div>
+            <div class="era-text">
+              <div class="era-meta">
+                <span class="tag">流行 Pop</span>
+                <span class="tag">城市</span>
+                <span class="tag">海风 &amp; 自由</span>
+              </div>
+              <h3>1989 (Taylor's Version)</h3>
+              <p class="era-desc">
+                这是泰勒从乡村正式转向流行的标志性专辑的重录版。蓝色天空、海鸥和大笑的封面，像是对自己说：我可以把过去重新唱一遍，也可以重新掌控自己的故事。
+              </p>
+              <p class="era-desc">
+                音乐上是干净利落的流行制作，歌词却仍然充满画面：霓虹灯、午夜公路、反复上演又结束的关系。重录版加入了 vault 曲目，让“1989 的故事”有了新的结局。
+              </p>
+              <div class="song-list">
+                <span class="song-pill">Style (Taylor's Version)</span>
+                <span class="song-pill">Blank Space (Taylor's Version)</span>
+                <span class="song-pill">Out Of The Woods (Taylor's Version)</span>
+                <span class="song-pill">“Slut!” (Taylor's Version)</span>
+              </div>
+            </div>
+          </div>
+          <div class="era-gallery">
+            <img src="images/1989tv-slut-single.jpg" alt="1989 TV single artwork">
+          </div>
+        </article>
+
+        <!-- Lover -->
+        <article class="era era-lover">
+          <div class="era-main">
+            <div class="era-text">
+              <div class="era-meta">
+                <span class="tag">粉色云朵</span>
+                <span class="tag">温柔 &amp; 浪漫</span>
+                <span class="tag">自我和解</span>
+              </div>
+              <h3>Lover</h3>
+              <p class="era-desc">
+                从《reputation》暗色的盔甲走出来，《Lover》像一张被粉色云朵包裹的明信片。它写恋爱，也写家庭、友情和自我——不是只有甜，而是“在经历过风浪之后，仍然选择相信爱的那份温柔”。
+              </p>
+              <p class="era-desc">
+                声音上更加多彩：有复古感、有独立流行的轻盈，也有安静到只剩心跳声的告白。封面上心形亮片妆的她，看起来有点脆弱，但眼神又很笃定。
+              </p>
+              <div class="song-list">
+                <span class="song-pill">Lover</span>
+                <span class="song-pill">Cruel Summer</span>
+                <span class="song-pill">The Archer</span>
+                <span class="song-pill">Cornelia Street</span>
+              </div>
+            </div>
+            <div class="era-cover">
+              <div class="era-cover-frame">
+                <img src="images/lover-cover.jpg" alt="Lover album cover">
+              </div>
+            </div>
+          </div>
+          <div class="era-gallery">
+            <img src="images/lover-more-chapter.jpg" alt="The More Lover Chapter artwork">
+          </div>
+          <div class="lover-hearts">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Albums -->
+  <section id="other-albums" class="section observe">
+    <div class="container">
+      <h2 class="section-title">其他 5 张知名专辑 / 代表作品（简要）</h2>
+      <p class="section-subtitle">
+        除了 1989 和 Lover，你大概也听过这些名字。这里用一行文字简单标记她不同阶段的样子，点击卡片可以放大封面。
+      </p>
+
+      <div class="albums-grid">
+        <article class="album-card" tabindex="0">
+          <img src="images/red-tv-chapter.jpg" alt="Red Taylor's Version era artwork">
+          <div class="album-body">
+            <div class="album-title">Red (Taylor's Version)</div>
+            <div class="album-meta">2012 / 2021 · 心碎与成长</div>
+            <p>
+              情绪像红色一样炙热的专辑。既有青春恋爱的小甜歌，也有《All Too Well》这样长达十分钟的情绪洪流，是很多人心目中“失恋教科书”。
+            </p>
+          </div>
+        </article>
+
+        <article class="album-card" tabindex="0">
+          <img src="images/midnights-til-dawn.jpg" alt="Midnights album artwork">
+          <div class="album-body">
+            <div class="album-title">Midnights</div>
+            <div class="album-meta">2022 · 午夜自白</div>
+            <p>
+              写给“人生里那些睡不着的夜晚”的专辑。合成器流行配上内心独白式歌词，把焦虑、自嘲和和解都放进旋律里，适合戴上耳机一个人循环。
+            </p>
+          </div>
+        </article>
+
+        <article class="album-card" tabindex="0">
+          <img src="images/speak-now-tour-live.jpg" alt="Speak Now World Tour live">
+          <div class="album-body">
+            <div class="album-title">Speak Now</div>
+            <div class="album-meta">2010 · 亲自开口说出来</div>
+            <p>
+              全碟由她独立创作，主打“自己把话说清楚”的勇气。《Back To December》《Enchanted》《Long Live》都在告诉你：有些话说出口才不会留下遗憾。
+            </p>
+          </div>
+        </article>
+
+        <article class="album-card" tabindex="0">
+          <img src="images/christmas-tree-farm.jpg" alt="Christmas Tree Farm single cover">
+          <div class="album-body">
+            <div class="album-title">Christmas Tree Farm</div>
+            <div class="album-meta">2019 · 圣诞单曲</div>
+            <p>
+              用童年记忆写成的冬日小故事。铃声、合唱和家庭录像般的画面感，让人一听就想窝在沙发上喝热可可、等圣诞。
+            </p>
+          </div>
+        </article>
+
+        <article class="album-card" tabindex="0">
+          <img src="images/back-to-december.jpg" alt="Back To December single artwork">
+          <div class="album-body">
+            <div class="album-title">Back To December</div>
+            <div class="album-meta">2010 · 经典道歉情歌</div>
+            <p>
+              少数从“我错了”视角出发的情歌。柔和的弦乐配上低头道歉的歌词，是 Speak Now 时代最被反复提起的歌曲之一，也让很多人开始注意她的写词能力。
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Eras Tour Photos -->
+  <section id="eras-tour" class="section observe">
+    <div class="container">
+      <h2 class="section-title">Eras Tour · Live Moments</h2>
+      <p class="section-subtitle">
+        如果说专辑是她写下的日记，那现场就是把日记翻开、放大给所有人看。这里用几张照片，留住巡演里的闪光瞬间。
+      </p>
+
+      <div class="eras-tour-grid">
+        <figure class="eras-photo">
+          <img src="images/taylor-green-field-soft-pink.jpg" alt="Taylor Swift with soft pink blouse in green field">
+          <figcaption class="eras-caption">
+            <strong>午后阳光</strong>
+            像在暂停键之间偷来的片刻安静，比舞台更像一张私人的相册页。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-black-stage-outfit.jpg" alt="Taylor Swift in black stage outfit">
+          <figcaption class="eras-caption">
+            <strong>暗色锋利</strong>
+            黑色造型配上灯光和舞台走位，是她“高能时刻”的代表画面之一。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-white-flowy-dress-spin.jpg" alt="Taylor Swift spinning in white flowy dress">
+          <figcaption class="eras-caption">
+            <strong>裙摆翻涌</strong>
+            白裙旋转起来的那一秒，像把歌里的每一个高音都变成了光。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-purple-fire-performance.jpg" alt="Taylor Swift in purple dress with fire-like background">
+          <figcaption class="eras-caption">
+            <strong>火焰与紫色</strong>
+            舞台后方像火焰一样的光，把情绪推到最炽热的那一格。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-gold-dress-guitar.jpg" alt="Taylor Swift in gold dress playing guitar">
+          <figcaption class="eras-caption">
+            <strong>金色与吉他</strong>
+            闪着光的吉他和裙摆，让人突然想起她最初拿着木吉他唱歌的日子。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-closeup-blue-eyes.jpg" alt="Closeup of Taylor Swift blue eyes">
+          <figcaption class="eras-caption">
+            <strong>近距离的眼神</strong>
+            歌词可以记错，但这种被直视到的感觉，很难忘记。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-green-gown-stage.jpg" alt="Taylor Swift in green gown on stage">
+          <figcaption class="eras-caption">
+            <strong>森林系绿裙</strong>
+            像从故事书里走出来的角色，在夜晚的舞台上讲一段关于魔法的歌。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-white-dress-purple-bg.jpg" alt="Taylor Swift in white dress with purple background">
+          <figcaption class="eras-caption">
+            <strong>紫色幕布前</strong>
+            眼线、红唇和白裙，经典的“泰勒式”戏剧感。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-floral-gown-lights.jpg" alt="Taylor Swift in floral gown under lights">
+          <figcaption class="eras-caption">
+            <strong>花瓣礼服</strong>
+            一身花瓣礼服站在灯海中央，很像是为所有听众颁发的一份奖章。
+          </figcaption>
+        </figure>
+
+        <figure class="eras-photo">
+          <img src="images/taylor-snowy-gown-stage.jpg" alt="Taylor Swift in snowy gown on stage">
+          <figcaption class="eras-caption">
+            <strong>雪落舞台</strong>
+            光点像雪一样落在裙摆上，结束却也像另一首歌的开始。
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="timeline" class="section observe">
+    <div class="container">
+      <h2 class="section-title">简单时间线 · 从乡村到多元时代</h2>
+      <p class="section-subtitle">
+        这里只放几个关键节点，方便快速把她的音乐旅程串起来。
+      </p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2006</div>
+          <div>发行首张同名专辑 <em>Taylor Swift</em>，以乡村音乐女孩的身份出道。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2010</div>
+          <div><em>Speak Now</em> 全碟由她独立创作，确立“会写故事的创作人”形象。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2014</div>
+          <div>发行 <em>1989</em>，正式转向流行乐；2023 年推出重录版 <em>1989 (Taylor's Version)</em>。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2019</div>
+          <div><em>Lover</em> 让她从暗色防御回到粉色云朵，更多地谈温柔与和解。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2022</div>
+          <div><em>Midnights</em> 回到流行框架，用午夜视角回顾过去的自己。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- My thoughts -->
+  <section id="thoughts" class="section observe">
+    <div class="container">
+      <h2 class="section-title">My Thoughts · 我和她的歌</h2>
+      <p class="section-subtitle">
+        这一块就当成是一页小小的乐迷手帐，记录自己和这些歌打过的照面。
+      </p>
+      <div class="note-card">
+        <h3>Why these eras matter to me</h3>
+        <p>
+          真正完整听完的第一张泰勒专辑，就是 <strong>1989</strong>。那时候还分不清风格流派，只记得通勤路上循环《Style》和《Blank Space》，觉得这些歌既很酷，又一点都不难懂——就像有人把自己心里那些小剧场，整理好之后放进了旋律里。
+        </p>
+        <p>
+          后来听到 <strong>Lover</strong> 的时候，已经比当初稍微“长大”了一点。那张粉色云朵的专辑里，不只是恋爱粉红泡泡，还有《The Archer》那种对自我怀疑的提问，也有《Cornelia Street》里那种“好怕失去”的不安。它让我意识到，温柔并不是天真，而是经历了很多还是想要相信的选择。
+        </p>
+        <p>
+          1989 代表的是“我可以重新来过”的勇气，Lover 像是“我可以好好生活”的答案。也许正是因为这样，当我在现实生活里迷茫、开心、委屈或者想要重启的时候，总能在她的歌里找到一个对应的片段，提醒自己：无论现在是哪一个 era，都是故事的一部分。
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- 右下角音乐按钮 + 背景音乐 -->
+<button class="music-toggle" type="button" title="点击播放 / 暂停音乐">♫</button>
+<audio id="bg-music" src="audio/taylor-song.mp3" loop></audio>
+
+<!-- 专辑大图弹窗 -->
+<div class="album-modal" aria-hidden="true">
+  <div class="album-modal-inner">
+    <button class="modal-close" type="button" aria-label="关闭大图">×</button>
+    <div class="album-modal-content">
+      <img src="" alt="">
+    </div>
+    <div class="album-caption"></div>
+  </div>
+</div>
+
+<script>
+  // 按钮平滑滚动
+  document.querySelectorAll("[data-scroll-target]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.getAttribute("data-scroll-target");
+      const el = document.querySelector(target);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  });
+
+  // 导航点击平滑滚动
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute("href"));
+      if (target) target.scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  // 滚动出现动画
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll(".observe").forEach(sec => observer.observe(sec));
+
+  // 根据滚动高亮导航
+  const sections = document.querySelectorAll("main section[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  window.addEventListener("scroll", () => {
+    let currentId = "";
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 120 && rect.bottom >= 120) {
+        currentId = "#" + sec.id;
+      }
+    });
+    if (currentId) {
+      navLinks.forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === currentId);
+      });
+    }
+  });
+
+  // 背景音乐控制
+  const audio = document.getElementById("bg-music");
+  const musicBtn = document.querySelector(".music-toggle");
+  let musicStartedByUser = false;
+
+  function startMusic() {
+    if (!audio) return;
+    audio.volume = 0.35;
+    audio.play().then(() => {
+      if (musicBtn) {
+        musicBtn.dataset.playing = "true";
+      }
+    }).catch(() => {
+      // 某些浏览器可能会拦截自动播放，这里静默失败即可
+    });
+  }
+
+  if (musicBtn && audio) {
+    // 点击音乐按钮，播放 / 暂停
+    musicBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        startMusic();
+        musicStartedByUser = true;
+      } else {
+        audio.pause();
+        musicBtn.dataset.playing = "false";
+      }
+    });
+
+    // 用户第一次点击页面任何地方时，如果还没启动过音乐，就尝试播放
+    const firstClickHandler = () => {
+      if (!musicStartedByUser) {
+        startMusic();
+        musicStartedByUser = true;
+      }
+      window.removeEventListener("click", firstClickHandler);
+    };
+    window.addEventListener("click", firstClickHandler);
+  }
+
+  // 专辑大图弹窗逻辑
+  const albumModal = document.querySelector(".album-modal");
+  const albumModalImg = albumModal.querySelector("img");
+  const albumCaption = albumModal.querySelector(".album-caption");
+  const albumCloseBtn = albumModal.querySelector(".modal-close");
+
+  function openAlbumModal(card) {
+    const img = card.querySelector("img");
+    const title = card.querySelector(".album-title")?.textContent || "";
+    albumModalImg.src = img.src;
+    albumModalImg.alt = img.alt || title;
+    albumCaption.textContent = title;
+    albumModal.classList.add("open");
+    albumModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeAlbumModal() {
+    albumModal.classList.remove("open");
+    albumModal.setAttribute("aria-hidden", "true");
+  }
+
+  document.querySelectorAll(".album-card").forEach(card => {
+    card.addEventListener("click", () => openAlbumModal(card));
+    card.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openAlbumModal(card);
+      }
+    });
+  });
+
+  albumModal.addEventListener("click", e => {
+    if (e.target === albumModal) {
+      closeAlbumModal();
+    }
+  });
+
+  if (albumCloseBtn) {
+    albumCloseBtn.addEventListener("click", closeAlbumModal);
+  }
+
+  window.addEventListener("keydown", e => {
+    if (e.key === "Escape" && albumModal.classList.contains("open")) {
+      closeAlbumModal();
+    }
+  });
+</script>
+</body>
+</html>

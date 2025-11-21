@@ -609,7 +609,8 @@
 
     .eras-photo img {
       width: 100%;
-      display: block;
+      height: 100%;
+      object-fit: cover;
       transform: scale(1.02);
       transition: transform 0.35s ease;
     }
@@ -1227,23 +1228,16 @@
     });
   });
 
-  // 滚动出现动画（带 Safari 兼容处理）
-  const observeSections = document.querySelectorAll(".observe");
+  // 滚动出现动画
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+      }
+    });
+  }, { threshold: 0.2 });
 
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-        }
-      });
-    }, { threshold: 0.2 });
-
-    observeSections.forEach(sec => observer.observe(sec));
-  } else {
-    // 老浏览器不支持 IntersectionObserver：直接全部显示
-    observeSections.forEach(sec => sec.classList.add("in-view"));
-  }
+  document.querySelectorAll(".observe").forEach(sec => observer.observe(sec));
 
   // 根据滚动高亮导航
   const sections = document.querySelectorAll("main section[id]");

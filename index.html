@@ -42,6 +42,7 @@
       top: 0;
       z-index: 100;
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       background: rgba(255,255,255,0.8);
       border-bottom: 1px solid rgba(200,200,220,0.6);
     }
@@ -528,6 +529,7 @@
       transition: opacity 0.3s ease;
       z-index: 200;
       backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
     .album-modal.open {
@@ -590,38 +592,44 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     }
 
-    /* Eras Tour 区 */
+    /* Eras Tour 区 —— 重新实现，修复黑块 & Safari 显示问题 */
     .eras-tour-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 18px;
     }
 
     .eras-photo {
       position: relative;
+      width: min(260px, 100%);
       border-radius: 22px;
       overflow: hidden;
       box-shadow: 0 12px 30px rgba(0,0,0,0.2);
       cursor: default;
       background: #000;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
+      -webkit-transition: -webkit-transform 0.35s ease, box-shadow 0.35s ease;
     }
 
     .eras-photo img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      display: block;
       transform: scale(1.02);
+      -webkit-transform: scale(1.02);
       transition: transform 0.35s ease;
+      -webkit-transition: -webkit-transform 0.35s ease;
     }
 
     .eras-photo:hover {
       transform: translateY(-8px) rotate(-0.5deg);
+      -webkit-transform: translateY(-8px) rotate(-0.5deg);
       box-shadow: 0 18px 40px rgba(0,0,0,0.45);
     }
 
     .eras-photo:hover img {
       transform: scale(1.07);
+      -webkit-transform: scale(1.07);
     }
 
     .eras-caption {
@@ -797,6 +805,15 @@
 
       .album-modal-inner {
         max-width: 94vw;
+      }
+
+      .eras-tour-grid {
+        justify-content: center;
+      }
+
+      .eras-photo {
+        width: 100%;
+        max-width: 320px;
       }
     }
   </style>

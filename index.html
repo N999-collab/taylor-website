@@ -727,7 +727,7 @@
       margin-bottom: 8px;
     }
 
-    /* 原有的“写给未来某次重听 1989 的自己”折叠块 */
+    /* 折叠块 + 彩蛋一按钮 */
     .egg-note {
       margin-top: 10px;
       position: relative;
@@ -757,9 +757,8 @@
       font-size: 13px;
     }
 
-    /* 彩蛋触发小按钮 */
     .egg-links {
-      margin-top: 10px;
+      margin-top: 8px;
       position: relative;
       z-index: 1;
       display: flex;
@@ -1082,6 +1081,8 @@
         <li><a href="#eras-tour" class="nav-link">Eras Tour</a></li>
         <li><a href="#timeline" class="nav-link">Timeline</a></li>
         <li><a href="#thoughts" class="nav-link">My Thoughts</a></li>
+        <!-- 彩蛋二：导航里的 Lucky -->
+        <li><a href="javascript:void(0)" class="nav-lucky" data-egg-id="2">Lucky</a></li>
       </ul>
     </nav>
   </div>
@@ -1309,7 +1310,7 @@
   </section>
 
   <!-- Eras Tour Photos -->
-  <section id="eras-tour" class="section observe">
+  <section id="eras-tour" class="section">
     <div class="container">
       <h2 class="section-title">Eras Tour · Live Moments</h2>
       <p class="section-subtitle">
@@ -1456,7 +1457,7 @@
           1989 代表的是“我可以重新来过”的勇气，Lover 像是“我可以好好生活”的答案。也许正是因为这样，当我在现实生活里迷茫、开心、委屈或者想要重启的时候，总能在她的歌里找到一个对应的片段，提醒自己：无论现在是哪一个 era，都是故事的一部分。
         </p>
 
-        <!-- 原来的折叠文字，仍然保留 -->
+        <!-- 折叠：写给未来某次重听 1989 的自己 + 彩蛋一按钮 -->
         <details class="egg-note">
           <summary>写给未来某次重听 1989 的自己</summary>
           <p>
@@ -1468,17 +1469,12 @@
           <p>
             如果那天你真的又点开了这张专辑，就当是给过去的自己一个小小的回应吧：我还在努力生活，而且我依然愿意为喜欢的东西心动。
           </p>
+          <div class="egg-links">
+            <button class="egg-chip" type="button" data-egg-id="1">
+              <span>★</span> 彩蛋一
+            </button>
+          </div>
         </details>
-
-        <!-- 新增：彩蛋一 & 彩蛋二 的小按钮 -->
-        <div class="egg-links">
-          <button class="egg-chip" type="button" data-egg-id="1">
-            <span>★</span> 彩蛋一
-          </button>
-          <button class="egg-chip" type="button" data-egg-id="2">
-            <span>★</span> 彩蛋二
-          </button>
-        </div>
       </div>
 
       <!-- 彩蛋 0：给看到这里的你（整体可点击放大） -->
@@ -1537,7 +1533,7 @@
     });
   });
 
-  // 导航点击平滑滚动
+  // 导航点击平滑滚动（不包括 Lucky）
   document.querySelectorAll(".nav-link").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
@@ -1758,7 +1754,7 @@
       if (!eggToast) return;
       eggToast.textContent = message;
       eggToast.classList.add("show");
-      if (autoHideMs) {
+      if (autoHideMs && autoHideMs > 0) {
         setTimeout(() => {
           eggToast.classList.remove("show");
         }, autoHideMs);
@@ -1770,23 +1766,16 @@
       if (!data) return;
 
       eggContent.style.backgroundImage = `url('${data.bg}')`;
+      eggText.innerHTML = data.html;
 
-      // 不同彩蛋的提示逻辑
       if (id === "1") {
-        // 彩蛋一：立刻弹出提示，不自动消失
+        // 彩蛋一：提示不自动消失
         showToast("恭喜你发现了彩蛋一！", 0);
-        eggText.innerHTML = data.html;
       } else if (id === "2") {
-        // 彩蛋二：先只显示提示，一秒后隐藏提示并显示正文
-        eggText.innerHTML = "";
+        // 彩蛋二：提示一秒后消失
         showToast("恭喜你发现了彩蛋二！", 1000);
-        setTimeout(() => {
-          eggText.innerHTML = data.html;
-        }, 1000);
       } else {
-        // 彩蛋 0：不给编号提示，只放大显示
         eggToast.classList.remove("show");
-        eggText.innerHTML = data.html;
       }
 
       eggModal.classList.add("open");
@@ -1806,7 +1795,6 @@
         openEggModal(id);
       });
 
-      // 键盘可访问（例如 friends-egg）
       trigger.addEventListener("keydown", e => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
